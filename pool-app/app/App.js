@@ -12,32 +12,35 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: '#F5FCFF'
   },
   welcome: {
     fontSize: 20,
     textAlign: 'center',
-    margin: 10,
+    margin: 10
   },
   instructions: {
     textAlign: 'center',
     color: '#333333',
-    marginBottom: 5,
-  },
+    marginBottom: 5
+  }
 });
 
-const App = ({text, onChangeText}) => {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.welcome}>
-        {text}
-      </Text>
-      <Button
-        title="Hi!"
-        onPress={() => onChangeText('Hi!')}
-      />
-    </View>
-  );
+const App = ({ text, onChangeText }) => (
+  <View style={styles.container}>
+    <Text style={styles.welcome}>
+      {text}
+    </Text>
+    <Button
+      title="Hi!"
+      onPress={() => onChangeText('Hi!')}
+    />
+  </View>
+);
+
+App.propTypes = {
+  text: PropTypes.string.isRequired,
+  onChangeText: PropTypes.func.isRequired
 };
 
 export default App;
