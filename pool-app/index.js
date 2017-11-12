@@ -5,14 +5,14 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
-// import { createLogger } from 'redux-logger';
+import { createLogger } from 'redux-logger';
 import reducer from './reducer/index';
 import AppContainer from './app/AppContainer';
 
-// const loggerMiddleware = createLogger({ predicate: () => '__DEV__' });
-// loggerMiddleware
+// this might not be right, need to double check '__DEV__'
+const loggerMiddleware = createLogger({ predicate: () => '__DEV__' });
 
-const enhancer = composeWithDevTools(applyMiddleware(thunkMiddleware));
+const enhancer = composeWithDevTools(applyMiddleware(thunkMiddleware, loggerMiddleware));
 
 const store = createStore(reducer, enhancer);
 
