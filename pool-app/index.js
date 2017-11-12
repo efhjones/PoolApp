@@ -1,31 +1,25 @@
 // @flow
-
-import React, { Component } from 'react';
-import { Provider } from 'react-redux'
-import { createStore, applyMiddleware, combineReducers, compose} from 'redux'
-import thunkMiddleware from 'redux-thunk'
-import { createLogger } from 'redux-logger'
-import reducer from './reducer/index.js'
-import AppContainer from './app/AppContainer.js';
+import React from 'react';
+import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
-const loggerMiddleware = createLogger({ predicate: (getState, action) => __DEV__  });
+import { createStore, applyMiddleware } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+// import { createLogger } from 'redux-logger';
+import reducer from './reducer/index';
+import AppContainer from './app/AppContainer';
 
-const enhancer = composeWithDevTools(
-  applyMiddleware(
-    thunkMiddleware,
-    loggerMiddleware,
-  ),
+// const loggerMiddleware = createLogger({ predicate: () => '__DEV__' });
+// loggerMiddleware
+
+const enhancer = composeWithDevTools(applyMiddleware(thunkMiddleware));
+
+const store = createStore(reducer, enhancer);
+
+const App = () => (
+  <Provider store={store}>
+    <AppContainer />
+  </Provider>
 );
-
-const store = createStore(reducer, /* preloadedState, */ enhancer);
-
-const App = () => {
-  return (
-    <Provider store={store}>
-      <AppContainer />
-    </Provider>
-  );
-};
 
 export default App;
