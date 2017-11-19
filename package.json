@@ -7,15 +7,23 @@
     "test": "jest"
   },
   "dependencies": {
+    "apollo-cache-inmemory": "^1.1.1",
+    "apollo-client": "^2.0.3",
+    "apollo-client-preset": "^1.0.3",
+    "apollo-link-http": "^1.2.0",
+    "graphql": "^0.11.7",
+    "graphql-tag": "^2.5.0",
     "prop-types": "^15.6.0",
     "react": "16.0.0",
+    "react-apollo": "^2.0.1",
     "react-native": "0.50.3",
     "react-navigation": "^1.0.0-beta.19",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
+    "redux-devtools-extension": "^2.13.2",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
-    "redux-devtools-extension": "^2.13.2"
+    "subscriptions-transport-ws": "^0.9.1"
   },
   "devDependencies": {
     "babel-jest": "21.2.0",
@@ -27,7 +35,8 @@
     "eslint-plugin-react": "^7.4.0",
     "eslint-plugin-react-native": "^3.1.0",
     "jest": "21.2.1",
-    "react-test-renderer": "16.0.0"
+    "react-test-renderer": "16.0.0",
+    "recompose": "^0.26.0"
   },
   "jest": {
     "preset": "react-native"
