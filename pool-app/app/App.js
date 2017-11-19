@@ -1,9 +1,11 @@
 import React from 'react';
+import { withStateHandlers } from 'recompose';
 import {
   StyleSheet,
   Text,
   View,
-  Button
+  Button,
+  TextInput
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -14,37 +16,74 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF'
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10
+  field: {
+    height: 40,
+    borderColor: 'grey',
+    borderWidth: 1,
+    width: 200,
+    marginBottom: 10,
+    padding: 10
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5
+  signInButton: {
+    display: 'flex'
+  },
+  createAccountButton: {
+    display: 'flex'
   }
 });
 
-const App = ({ text, onChangeText, navigation }) => (
+const App = ({
+  onChangeUsername, onChangePassword, username, password, onSignUp
+}) => (
   <View style={styles.container}>
-    <Text style={styles.welcome}>
-      {text}
-    </Text>
-    <Button
-      title="Hi!"
-      onPress={() => onChangeText('Hi!')}
+    <Text>Sign in or create a new account below</Text>
+    <TextInput
+      onChangeText={text => onChangeUsername(text)}
+      value={username}
+      style={styles.field}
+      placeholder="username"
+    />
+    <TextInput
+      onChangeText={text => onChangePassword(text)}
+      value={password}
+      style={styles.field}
+      placeholder="password"
     />
     <Button
-      onPress={() => navigation.navigate('NewGame')}
-      title="Create a new game"
+      style={styles.createAccountButton}
+      onPress={onSignUp}
+      title="Create an Account"
+    />
+    <Button
+      style={styles.signInButton}
+      onPress={onSignUp}
+      title="Sign In"
     />
   </View>
 );
 
-App.propTypes = {
-  text: PropTypes.string.isRequired,
-  onChangeText: PropTypes.func.isRequired
+const initialState = {
+  username: '',
+  password: ''
 };
 
-export default App;
+const handlers = {
+  onChangeUsername: () => username => ({
+    username
+  }),
+  onChangePassword: () => password => ({
+    password
+  })
+};
+
+App.propTypes = {
+  username: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
+  onChangeUsername: PropTypes.func.isRequired,
+  onChangePassword: PropTypes.func.isRequired,
+  navigation: PropTypes.any,
+  onSignUp: PropTypes.func.isRequired
+
+};
+
+export default withStateHandlers(initialState, handlers)(App);

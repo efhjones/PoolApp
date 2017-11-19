@@ -9,7 +9,11 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   onChangeText(text) {
     dispatch(AppActions.onChangeText(text));
+  },
+  onSignUp(username, password) {
+    dispatch(AppActions.onSignUp(username, password));
   }
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
