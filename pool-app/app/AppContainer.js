@@ -5,6 +5,7 @@ import AppActions from './actions';
 const mapStateToProps = state => ({
   text: state.app.text
 });
+
 const mapDispatchToProps = dispatch => ({
   onChangeText(text) {
     dispatch(AppActions.onChangeText(text));
