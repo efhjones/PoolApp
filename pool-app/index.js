@@ -1,25 +1,23 @@
 // @flow
 import React from 'react';
 import { Provider } from 'react-redux';
-import { composeWithDevTools } from 'redux-devtools-extension';
-
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { createLogger } from 'redux-logger';
+
 import reducer from './reducer/index';
-import AppContainer from './app/AppContainer';
+import NavigationContainer from './navigation/NavigationContainer';
 
 // this might not be right, need to double check '__DEV__'
 const loggerMiddleware = createLogger({ predicate: () => '__DEV__' });
 
-const enhancer = composeWithDevTools(applyMiddleware(thunkMiddleware, loggerMiddleware));
-
-const store = createStore(reducer, enhancer);
+const store = createStore(reducer, applyMiddleware(thunkMiddleware, loggerMiddleware));
 
 const App = () => (
   <Provider store={store}>
-    <AppContainer />
+    <NavigationContainer />
   </Provider>
 );
+
 
 export default App;

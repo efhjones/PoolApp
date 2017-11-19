@@ -1,5 +1,5 @@
-import createReducer from '../utils/createReducer.js';
-import * as ActionTypes from './actionTypes.js';
+import createReducer from '../utils/createReducer';
+import * as ActionTypes from './actionTypes';
 
 const initialState = {
   text: 'Yo I\'m the default state text!'
@@ -11,7 +11,7 @@ const appReducer = createReducer(initialState, {
       ...state,
       text: action.text
     };
-  },
+  }
 });
 
 export default appReducer;

@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const App = () => (
+const NewGame = () => (
   <View style={styles.container}>
     <Text style={styles.welcome}>
     Hi! &apos;m the New Game page!
@@ -22,4 +22,4 @@ const App = () => (
   </View>
 );
 
-export default App;
+export default NewGame;
