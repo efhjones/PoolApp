@@ -28,14 +28,15 @@ const styles = StyleSheet.create({
 
 const App = ({ text, onChangeText, navigation }) => (
   <View style={styles.container}>
-    <Text style={styles.welcome}>Hi!{text}
+    <Text style={styles.welcome}>
+      {text}
     </Text>
     <Button
       title="Hi!"
       onPress={() => onChangeText('Hi!')}
     />
     <Button
-      onPress={() => navigation.navigate('New Game')}
+      onPress={() => navigation.navigate('NewGame')}
       title="Create a new game"
     />
   </View>
