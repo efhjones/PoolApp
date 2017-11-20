@@ -8,6 +8,7 @@ import {
   TextInput
 } from 'react-native';
 import PropTypes from 'prop-types';
+import Error from '../error/Error';
 
 const styles = StyleSheet.create({
   container: {
@@ -49,6 +50,11 @@ const App = ({
       style={styles.field}
       placeholder="password"
     />
+    {
+        isErrored
+        ? <Error error={errorMessage} />
+        : null
+      }
     <Button
       style={styles.createAccountButton}
       onPress={onSignUp}

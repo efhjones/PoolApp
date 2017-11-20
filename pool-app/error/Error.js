@@ -21,14 +21,11 @@ const styles = StyleSheet.create({
   }
 });
 
-const Error = ({ error }) => {
-  console.log('Error rendering: ', error);
-  return (
-    <View style={styles.container}>
-      <Text style={styles.message}>{error}</Text>
-    </View>
-  );
-};
+const Error = ({ error }) => (
+  <View style={styles.container}>
+    <Text style={styles.message}>{error}</Text>
+  </View>
+);
 
 Error.propTypes = {
   error: PropTypes.string.isRequired
