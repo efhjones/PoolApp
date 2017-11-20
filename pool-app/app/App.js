@@ -34,18 +34,28 @@ const styles = StyleSheet.create({
 });
 
 const App = ({
-  onChangeUsername, onChangePassword, username, password, onSignUp
+  onChangeEmail,
+  onChangePassword,
+  email,
+  password,
+  onSignUp,
+  isErrored,
+  errorMessage,
+  onClearErrors
 }) => (
   <View style={styles.container}>
     <Text>Sign in or create a new account below</Text>
     <TextInput
-      onChangeText={text => onChangeUsername(text)}
-      value={username}
+      onChangeText={newEmail => onChangeEmail(newEmail)}
+      onFocus={onClearErrors}
+      value={email}
       style={styles.field}
-      placeholder="username"
+      placeholder="email"
+      keyboardType="email-address"
     />
     <TextInput
-      onChangeText={text => onChangePassword(text)}
+      onChangeText={newPassword => onChangePassword(newPassword)}
+      onFocus={onClearErrors}
       value={password}
       style={styles.field}
       placeholder="password"
@@ -57,39 +67,41 @@ const App = ({
       }
     <Button
       style={styles.createAccountButton}
-      onPress={onSignUp}
+      onPress={() => onSignUp(email, password)}
       title="Create an Account"
     />
     <Button
       style={styles.signInButton}
-      onPress={onSignUp}
       title="Sign In"
+      onPress={() => null}
     />
   </View>
 );
 
 const initialState = {
-  username: '',
+  email: '',
   password: ''
 };
 
 const handlers = {
-  onChangeUsername: () => username => ({
-    username
+  onChangeEmail: () => email => ({
+    email
   }),
   onChangePassword: () => password => ({
     password
   })
 };
 
-App.propTypes = {
-  username: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired,
-  onChangeUsername: PropTypes.func.isRequired,
-  onChangePassword: PropTypes.func.isRequired,
-  navigation: PropTypes.any,
-  onSignUp: PropTypes.func.isRequired
 
+App.propTypes = {
+  email: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
+  onChangeEmail: PropTypes.func.isRequired,
+  onChangePassword: PropTypes.func.isRequired,
+  isErrored: PropTypes.bool.isRequired,
+  onSignUp: PropTypes.func.isRequired,
+  onClearErrors: PropTypes.func.isRequired,
+  errorMessage: PropTypes.string
 };
 
 export default withStateHandlers(initialState, handlers)(App);
