@@ -13,9 +13,20 @@ const AppActions = {
       if (err) {
         return dispatch(AppActions.onSetErrors(err));
       }
-      dispatch({
+      return dispatch({
         type: ActionTypes.ON_SAVE_TOKEN,
         token
+      });
+    });
+  },
+  onLogOut() {
+    return dispatch => AsyncStorage.removeItem('UserAuthToken', (err) => {
+      debugger;
+      if (err) {
+        return dispatch(AppActions.onSetErrors(err));
+      }
+      return dispatch({
+        type: ActionTypes.ON_LOG_OUT
       });
     });
   },

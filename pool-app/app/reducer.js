@@ -21,6 +21,12 @@ const appReducer = createReducer(initialState, {
       token
     };
   },
+  [ActionTypes.ON_LOG_OUT](state) {
+    return {
+      ...state,
+      id: null
+    };
+  },
   [ActionTypes.ON_SET_ERRORS](state, action) {
     const errorMessage = _.get(
       action,
