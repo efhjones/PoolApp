@@ -10,8 +10,7 @@ const mapStateToProps = (state) => {
   const { isErrored, errorMessage } = app;
   return {
     isErrored,
-    errorMessage,
-    text: state.app.text
+    errorMessage
   };
 };
 
@@ -24,6 +23,18 @@ const mapDispatchToProps = (dispatch, props) => ({
         dispatch(AppActions.onSetId(id));
         dispatch(AppActions.onSaveToken(token));
       }).catch((error) => {
+        dispatch(AppActions.onSetErrors(error));
+      });
+  },
+  onLogIn(email, password) {
+    props.LogInUser({ variables: { email, password } })
+      .then(({ data }) => {
+        const { authenticateUser } = data;
+        const { id, token } = authenticateUser;
+        dispatch(AppActions.onSetId(id));
+        dispatch(AppActions.onSaveToken(token));
+      })
+      .catch((error) => {
         dispatch(AppActions.onSetErrors(error));
       });
   },
@@ -44,8 +55,27 @@ const SIGNUP_EMAIL_USER = gql`
   }
 `;
 
+const LOGIN_USER = gql`
+  mutation AuthenticateUser($email: String!, $password: String!) {
+    authenticateUser(email: $email, password: $password) {
+      id
+      token
+    }
+  }
+`;
+
+
+const LOGGED_IN_USER = gql`
+  query loggedInUser {
+    loggedInUser {
+      id
+    }
+  }
+`;
 
 export default _.flowRight(
   graphql(SIGNUP_EMAIL_USER, { name: 'signUpUser' }),
+  graphql(LOGIN_USER, { name: 'LogInUser' }),
+  graphql(LOGGED_IN_USER, { options: { fetchPolicy: 'network-only' } }),
   connect(mapStateToProps, mapDispatchToProps)
 )(App);

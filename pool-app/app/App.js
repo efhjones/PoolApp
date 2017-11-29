@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Error from '../error/Error';
+import Home from '../home/HomeContainer';
 
 const styles = StyleSheet.create({
   container: {
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const App = ({
+const LoggedOutView = ({
   onChangeEmail,
   onChangePassword,
   email,
@@ -41,7 +42,8 @@ const App = ({
   onSignUp,
   isErrored,
   errorMessage,
-  onClearErrors
+  onClearErrors,
+  onLogIn
 }) => (
   <View style={styles.container}>
     <Text>Sign in or create a new account below</Text>
@@ -50,6 +52,7 @@ const App = ({
       onFocus={onClearErrors}
       value={email}
       style={styles.field}
+      autoCapitalize="none"
       placeholder="email"
       keyboardType="email-address"
     />
@@ -61,10 +64,10 @@ const App = ({
       placeholder="password"
     />
     {
-        isErrored
-        ? <Error error={errorMessage} />
-        : null
-      }
+      isErrored
+      ? <Error error={errorMessage} />
+      : null
+    }
     <Button
       style={styles.createAccountButton}
       onPress={() => onSignUp(email, password)}
@@ -73,10 +76,44 @@ const App = ({
     <Button
       style={styles.signInButton}
       title="Sign In"
-      onPress={() => null}
+      onPress={() => onLogIn(email, password)}
     />
   </View>
 );
+
+LoggedOutView.propTypes = {
+  email: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
+  onChangeEmail: PropTypes.func.isRequired,
+  onChangePassword: PropTypes.func.isRequired,
+  isErrored: PropTypes.bool.isRequired,
+  onSignUp: PropTypes.func.isRequired,
+  onClearErrors: PropTypes.func.isRequired,
+  errorMessage: PropTypes.string,
+  onLogIn: PropTypes.func.isRequired
+};
+
+LoggedOutView.defaultProps = {
+  errorMessage: ''
+};
+
+const isUserAuthenticated = loggedInUser => (
+  loggedInUser && loggedInUser.id !== null
+);
+
+const App = (props) => {
+  const { data } = props;
+  if (data.loading) {
+    return (
+      <View style={styles.container}><Text>Loading...</Text></View>
+    );
+  }
+  const { loggedInUser } = data;
+  const isLoggedIn = isUserAuthenticated(loggedInUser);
+  return (
+    isLoggedIn ? <Home /> : <LoggedOutView {...props} />
+  );
+};
 
 const initialState = {
   email: '',
@@ -92,16 +129,5 @@ const handlers = {
   })
 };
 
-
-App.propTypes = {
-  email: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired,
-  onChangeEmail: PropTypes.func.isRequired,
-  onChangePassword: PropTypes.func.isRequired,
-  isErrored: PropTypes.bool.isRequired,
-  onSignUp: PropTypes.func.isRequired,
-  onClearErrors: PropTypes.func.isRequired,
-  errorMessage: PropTypes.string
-};
 
 export default withStateHandlers(initialState, handlers)(App);
