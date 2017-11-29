@@ -5,7 +5,8 @@ import * as ActionTypes from './actionTypes';
 const initialState = {
   id: null,
   isErrored: false,
-  errorMessage: null
+  errorMessage: null,
+  token: null
 };
 
 const appReducer = createReducer(initialState, {
@@ -24,7 +25,8 @@ const appReducer = createReducer(initialState, {
   [ActionTypes.ON_LOG_OUT](state) {
     return {
       ...state,
-      id: null
+      id: null,
+      token: null
     };
   },
   [ActionTypes.ON_SET_ERRORS](state, action) {

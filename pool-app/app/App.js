@@ -109,10 +109,21 @@ const App = (props) => {
     );
   }
   const { loggedInUser } = data;
-  const isLoggedIn = isUserAuthenticated(loggedInUser);
+  const isLoggedIn = isUserAuthenticated(loggedInUser) || props.id;
   return (
     isLoggedIn ? <Home /> : <LoggedOutView {...props} />
   );
+};
+
+App.propTypes = {
+  data: PropTypes.shape({
+    loading: PropTypes.bool.isRequired
+  }).isRequired,
+  id: PropTypes.string
+};
+
+App.defaultProps = {
+  id: null
 };
 
 const initialState = {

@@ -21,7 +21,6 @@ const AppActions = {
   },
   onLogOut() {
     return dispatch => AsyncStorage.removeItem('UserAuthToken', (err) => {
-      debugger;
       if (err) {
         return dispatch(AppActions.onSetErrors(err));
       }

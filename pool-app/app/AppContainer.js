@@ -7,10 +7,14 @@ import AppActions from './actions';
 
 const mapStateToProps = (state) => {
   const { app } = state;
-  const { isErrored, errorMessage } = app;
+  const {
+    isErrored, errorMessage, id, token
+  } = app;
   return {
     isErrored,
-    errorMessage
+    errorMessage,
+    id,
+    token
   };
 };
 
@@ -63,7 +67,6 @@ const LOGIN_USER = gql`
     }
   }
 `;
-
 
 const LOGGED_IN_USER = gql`
   query loggedInUser {
