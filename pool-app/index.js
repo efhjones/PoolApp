@@ -18,22 +18,21 @@ const httpLink = createHttpLink({
   uri: 'https://api.graph.cool/simple/v1/cja6b9y0y07q50129zgdjekpk'
 });
 
-const getAuthToken = async () => {
+const middlewareLink = setContext(async () => {
   try {
     const token = await AsyncStorage.getItem('UserAuthToken');
-    return token;
-  } catch (error) {
-    return error;
+    return ({
+      headers: {
+        authorization: `Bearer ${token}` || null
+      }
+    });
+  } catch (err) {
+    return ({
+      headers: {
+        authorization: null
+      }
+    });
   }
-};
-
-const middlewareLink = setContext(async () => {
-  const authToken = await getAuthToken();
-  return ({
-    headers: {
-      authorization: `Bearer ${authToken}` || null
-    }
-  });
 });
 
 const link = middlewareLink.concat(httpLink);
