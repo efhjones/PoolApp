@@ -4,17 +4,19 @@ import _ from 'lodash';
 import gql from 'graphql-tag';
 import App from './App';
 import AppActions from './actions';
+import { getToken } from '../utils/storageUtils';
 
 const mapStateToProps = (state) => {
   const { app } = state;
   const {
-    isErrored, errorMessage, id, token
+    isErrored, errorMessage, id, token, isLoading
   } = app;
   return {
     isErrored,
     errorMessage,
     id,
-    token
+    token,
+    isLoading
   };
 };
 
@@ -31,17 +33,21 @@ const mapDispatchToProps = (dispatch, props) => ({
       });
   },
   onLogIn(email, password) {
+    dispatch(AppActions.onMarkLoading());
     props.LogInUser({ variables: { email, password } })
       .then(({ data }) => {
         const { authenticateUser } = data;
         const { id, token } = authenticateUser;
         dispatch(AppActions.onSetId(id));
         dispatch(AppActions.onSaveToken(token));
+        dispatch(AppActions.onMarkLoadingDone());
       })
       .catch((error) => {
+        dispatch(AppActions.onMarkLoadingDone());
         dispatch(AppActions.onSetErrors(error));
       });
   },
+
   onChangeText(text) {
     dispatch(AppActions.onChangeText(text));
   },

@@ -40,6 +40,16 @@ const AppActions = {
     return {
       type: ActionTypes.CLEAR_ERRORS
     };
+  },
+  onMarkLoading() {
+    return {
+      type: ActionTypes.ON_MARK_LOADING
+    };
+  },
+  onMarkLoadingDone() {
+    return {
+      type: ActionTypes.ON_MARK_LOADING_DONE
+    };
   }
 };
 

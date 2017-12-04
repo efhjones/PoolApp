@@ -6,7 +6,8 @@ const initialState = {
   id: null,
   isErrored: false,
   errorMessage: null,
-  token: null
+  token: null,
+  isLoading: false
 };
 
 const appReducer = createReducer(initialState, {
@@ -46,6 +47,18 @@ const appReducer = createReducer(initialState, {
       ...state,
       isErrored: false,
       errorMessage: null
+    };
+  },
+  [ActionTypes.ON_MARK_LOADING](state) {
+    return {
+      ...state,
+      isLoading: true
+    };
+  },
+  [ActionTypes.ON_MARK_LOADING_DONE](state) {
+    return {
+      ...state,
+      isLoading: false
     };
   }
 });
