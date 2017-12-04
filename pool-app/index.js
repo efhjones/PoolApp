@@ -5,16 +5,40 @@ import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 import { ApolloClient } from 'apollo-client';
+import AsyncStorage from 'AsyncStorage';
 
 import { createHttpLink } from 'apollo-link-http';
+import { setContext } from 'apollo-link-context';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloProvider } from 'react-apollo';
 import reducer from './reducer/index';
 import NavigationContainer from './navigation/NavigationContainer';
 
+const httpLink = createHttpLink({
+  uri: 'https://api.graph.cool/simple/v1/cja6b9y0y07q50129zgdjekpk'
+});
+
+const middlewareLink = setContext(async () => {
+  try {
+    const token = await AsyncStorage.getItem('UserAuthToken');
+    return ({
+      headers: {
+        authorization: `Bearer ${token}` || null
+      }
+    });
+  } catch (err) {
+    return ({
+      headers: {
+        authorization: null
+      }
+    });
+  }
+});
+
+const link = middlewareLink.concat(httpLink);
 
 const client = new ApolloClient({
-  link: createHttpLink({ uri: 'https://api.graph.cool/simple/v1/cja6b9y0y07q50129zgdjekpk' }),
+  link,
   cache: new InMemoryCache()
 });
 

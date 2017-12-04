@@ -5,7 +5,9 @@ import * as ActionTypes from './actionTypes';
 const initialState = {
   id: null,
   isErrored: false,
-  errorMessage: null
+  errorMessage: null,
+  token: null,
+  isLoading: false
 };
 
 const appReducer = createReducer(initialState, {
@@ -19,6 +21,13 @@ const appReducer = createReducer(initialState, {
     return {
       ...state,
       token
+    };
+  },
+  [ActionTypes.ON_LOG_OUT](state) {
+    return {
+      ...state,
+      id: null,
+      token: null
     };
   },
   [ActionTypes.ON_SET_ERRORS](state, action) {
@@ -38,6 +47,18 @@ const appReducer = createReducer(initialState, {
       ...state,
       isErrored: false,
       errorMessage: null
+    };
+  },
+  [ActionTypes.ON_MARK_LOADING](state) {
+    return {
+      ...state,
+      isLoading: true
+    };
+  },
+  [ActionTypes.ON_MARK_LOADING_DONE](state) {
+    return {
+      ...state,
+      isLoading: false
     };
   }
 });

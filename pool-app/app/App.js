@@ -1,5 +1,6 @@
 import React from 'react';
-import { withStateHandlers } from 'recompose';
+import _ from 'lodash';
+import { withStateHandlers, lifecycle, branch, renderComponent, compose } from 'recompose';
 import {
   StyleSheet,
   Text,
@@ -9,6 +10,8 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Error from '../error/Error';
+import Home from '../home/HomeContainer';
+import Loading from '../loading/Loading';
 
 const styles = StyleSheet.create({
   container: {
@@ -33,7 +36,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const App = ({
+const LoggedOutView = ({
   onChangeEmail,
   onChangePassword,
   email,
@@ -41,7 +44,8 @@ const App = ({
   onSignUp,
   isErrored,
   errorMessage,
-  onClearErrors
+  onClearErrors,
+  onLogIn
 }) => (
   <View style={styles.container}>
     <Text>Sign in or create a new account below</Text>
@@ -50,6 +54,7 @@ const App = ({
       onFocus={onClearErrors}
       value={email}
       style={styles.field}
+      autoCapitalize="none"
       placeholder="email"
       keyboardType="email-address"
     />
@@ -61,10 +66,10 @@ const App = ({
       placeholder="password"
     />
     {
-        isErrored
-        ? <Error error={errorMessage} />
-        : null
-      }
+      isErrored
+      ? <Error error={errorMessage} />
+      : null
+    }
     <Button
       style={styles.createAccountButton}
       onPress={() => onSignUp(email, password)}
@@ -73,10 +78,44 @@ const App = ({
     <Button
       style={styles.signInButton}
       title="Sign In"
-      onPress={() => null}
+      onPress={() => onLogIn(email, password)}
     />
   </View>
 );
+
+LoggedOutView.propTypes = {
+  email: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired,
+  onChangeEmail: PropTypes.func.isRequired,
+  onChangePassword: PropTypes.func.isRequired,
+  isErrored: PropTypes.bool.isRequired,
+  onSignUp: PropTypes.func.isRequired,
+  onClearErrors: PropTypes.func.isRequired,
+  errorMessage: PropTypes.string,
+  onLogIn: PropTypes.func.isRequired
+};
+
+LoggedOutView.defaultProps = {
+  errorMessage: ''
+};
+
+const App = (props) => {
+  const isLoggedIn = props.id;
+  return (
+    isLoggedIn ? <Home /> : <LoggedOutView {...props} />
+  );
+};
+
+App.propTypes = {
+  data: PropTypes.shape({
+    loading: PropTypes.bool.isRequired
+  }).isRequired,
+  id: PropTypes.string
+};
+
+App.defaultProps = {
+  id: null
+};
 
 const initialState = {
   email: '',
@@ -92,16 +131,20 @@ const handlers = {
   })
 };
 
+const AppWithLifecycle = lifecycle({
+  componentWillMount() {
+    const id = _.get(this.props.data, ['loggedInUser', 'id']);
+    if (id) {
+      this.props.onLogInWithId({ id });
+    }
+  }
+})(App);
 
-App.propTypes = {
-  email: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired,
-  onChangeEmail: PropTypes.func.isRequired,
-  onChangePassword: PropTypes.func.isRequired,
-  isErrored: PropTypes.bool.isRequired,
-  onSignUp: PropTypes.func.isRequired,
-  onClearErrors: PropTypes.func.isRequired,
-  errorMessage: PropTypes.string
-};
-
-export default withStateHandlers(initialState, handlers)(App);
+export default compose(
+  withStateHandlers(initialState, handlers),
+  branch(
+    props => (props.data && props.data.loading) || props.isLoading,
+    renderComponent(Loading),
+    renderComponent(AppWithLifecycle)
+  )
+)(App);

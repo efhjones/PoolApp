@@ -1,5 +1,6 @@
 import AsyncStorage from 'AsyncStorage';
 import * as ActionTypes from './actionTypes';
+import { STORAGE_AUTH_TOKEN } from '../utils/constants';
 
 const AppActions = {
   onSetId(id) {
@@ -9,13 +10,23 @@ const AppActions = {
     };
   },
   onSaveToken(token) {
-    return dispatch => AsyncStorage.setItem('UserAuthToken', token, (err) => {
+    return dispatch => AsyncStorage.setItem(STORAGE_AUTH_TOKEN, token, (err) => {
       if (err) {
         return dispatch(AppActions.onSetErrors(err));
       }
-      dispatch({
+      return dispatch({
         type: ActionTypes.ON_SAVE_TOKEN,
         token
+      });
+    });
+  },
+  onLogOut() {
+    return dispatch => AsyncStorage.removeItem(STORAGE_AUTH_TOKEN, (err) => {
+      if (err) {
+        return dispatch(AppActions.onSetErrors(err));
+      }
+      return dispatch({
+        type: ActionTypes.ON_LOG_OUT
       });
     });
   },
@@ -28,6 +39,16 @@ const AppActions = {
   onClearErrors() {
     return {
       type: ActionTypes.CLEAR_ERRORS
+    };
+  },
+  onMarkLoading() {
+    return {
+      type: ActionTypes.ON_MARK_LOADING
+    };
+  },
+  onMarkLoadingDone() {
+    return {
+      type: ActionTypes.ON_MARK_LOADING_DONE
     };
   }
 };
