@@ -1,5 +1,6 @@
 import React from 'react';
-import { withStateHandlers } from 'recompose';
+import _ from 'lodash';
+import { withStateHandlers, lifecycle, branch, renderComponent, compose } from 'recompose';
 import {
   StyleSheet,
   Text,
@@ -10,6 +11,7 @@ import {
 import PropTypes from 'prop-types';
 import Error from '../error/Error';
 import Home from '../home/HomeContainer';
+import Loading from '../loading/Loading';
 
 const styles = StyleSheet.create({
   container: {
@@ -97,19 +99,8 @@ LoggedOutView.defaultProps = {
   errorMessage: ''
 };
 
-const isUserAuthenticated = loggedInUser => (
-  loggedInUser && loggedInUser.id !== null
-);
-
 const App = (props) => {
-  const { data } = props;
-  if (data.loading) {
-    return (
-      <View style={styles.container}><Text>Loading...</Text></View>
-    );
-  }
-  const { loggedInUser } = data;
-  const isLoggedIn = isUserAuthenticated(loggedInUser) || props.id;
+  const isLoggedIn = props.id;
   return (
     isLoggedIn ? <Home /> : <LoggedOutView {...props} />
   );
@@ -140,5 +131,20 @@ const handlers = {
   })
 };
 
+const AppWithLifecycle = lifecycle({
+  componentWillMount() {
+    const id = _.get(this.props.data, ['loggedInUser', 'id']);
+    if (id) {
+      this.props.onLogInWithId({ id });
+    }
+  }
+})(App);
 
-export default withStateHandlers(initialState, handlers)(App);
+export default compose(
+  withStateHandlers(initialState, handlers),
+  branch(
+    props => (props.data && props.data.loading) || props.isLoading,
+    renderComponent(Loading),
+    renderComponent(AppWithLifecycle)
+  )
+)(App);

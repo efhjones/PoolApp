@@ -53,6 +53,11 @@ const mapDispatchToProps = (dispatch, props) => ({
   },
   onClearErrors() {
     dispatch(AppActions.onClearErrors());
+  },
+  onLogInWithId: async ({ id }) => {
+    dispatch(AppActions.onSetId(id));
+    const token = await getToken();
+    dispatch(AppActions.onSaveToken(token));
   }
 });
 
