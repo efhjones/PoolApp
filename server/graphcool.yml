@@ -21,6 +21,12 @@ functions:
     handler:
       code: src/email-password/loggedInUser.ts
 
+  addNewGame:
+    type: resolver
+    schema: scr/new-game/addNewGame.graphql
+    handler:
+      code: src/new-game/addNewGame.ts
+
 
 
 # Model/Relation permissions are used to limit the API access
