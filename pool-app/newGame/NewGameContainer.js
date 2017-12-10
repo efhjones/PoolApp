@@ -5,17 +5,22 @@ import gql from 'graphql-tag';
 import NewGame from './NewGame';
 
 const mapStateToProps = (state) => {
-  const { app } = state;
+  const { app, home } = state;
+  const { gameId } = home;
   const {
     id
   } = app;
   return {
     navigation: state.nav,
-    id
+    id,
+    gameId
   };
 };
 
 const mapDispatchToProps = (dispatch, props) => ({
+  onAddPlayer() {
+    props.navigation.navigate('AddPlayer');
+  }
 });
 
 
