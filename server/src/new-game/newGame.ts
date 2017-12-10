@@ -2,7 +2,7 @@ import { fromEvent, FunctionEvent } from 'graphcool-lib'
 import { GraphQLClient } from 'graphql-request'
 
 // game id
-interface Game {
+interface NewGame {
   id: string
 }
 
@@ -17,23 +17,20 @@ export default async (event: FunctionEvent<EventData>) => {
     const graphcool = fromEvent(event)
     const api = graphcool.api('simple/v1')
 
-    const { userId } = event.data
+    const { userId } = event.data;
 
     // create new game
     const gameId = await createNewGame(api, userId)
-
-    return { data: { id: gameId,  } }
+    return { data: { id: gameId } }
   } catch (e) {
-    return { error: 'An unexpected error occured during signup.' }
+    return { error: 'Oh Nooooooooo! An unexpected error occured during new game creation.', e }
   }
 }
 
 async function createNewGame(api: GraphQLClient, userId: string): Promise<string> {
   const mutation = `
-    mutation createGame($userId: String!) {
-      createGame(
-        id: $userId
-      ) {
+    mutation {
+      createGame {
         id
       }
     }
@@ -43,7 +40,7 @@ async function createNewGame(api: GraphQLClient, userId: string): Promise<string
     userId,
   }
 
-  return api.request<{ createNewGame: Game }>(mutation, variables)
-    .then(r => r.createNewGame.id)
+  return api.request<{ createGame: NewGame }>(mutation, variables)
+    .then((r => r.createGame.id))
 }
 
