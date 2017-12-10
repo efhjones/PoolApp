@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import gql from 'graphql-tag';
 import AddNewGame from './AddNewGame';
+import AppActions from '../app/actions';
+import GameActions from './actions';
 
 const mapStateToProps = (state) => {
   const { app } = state;
@@ -16,18 +18,22 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, props) => ({
   onCreateGame(userId) {
-    props.createGame(userId)
-      .then((response) => {
+    props.createGame({ variables: { userId } })
+      .then(({ data }) => {
+        const { createNewGame } = data;
+        const gameId = createNewGame.id;
+        dispatch(GameActions.onEnterGameFlow(gameId));
         debugger;
+        props.navigation();
       }).catch((error) => {
-        debugger;
+        dispatch(AppActions.onSetErrors(error));
       });
   }
 });
 
 const CREATE_GAME = gql`
-  mutation createGame($id: String!) {
-    createGame(userId: $id) {
+  mutation CreateGame($userId: String!) {
+    createNewGame(userId: $userId) {
       id
     }
   }

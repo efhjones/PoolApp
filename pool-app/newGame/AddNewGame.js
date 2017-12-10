@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const AddNewGame = ({ id, onCreateGame }) => (
+const AddNewGameButton = ({ id, onCreateGame }) => (
   <View style={styles.container}>
     <Button
       style={styles.addGameButton}
@@ -27,9 +27,9 @@ const AddNewGame = ({ id, onCreateGame }) => (
   </View>
 );
 
-AddNewGame.propTypes = {
+AddNewGameButton.propTypes = {
   id: PropTypes.string.isRequired,
   onCreateGame: PropTypes.func.isRequired
 };
 
-export default AddNewGame;
+export default AddNewGameButton;
