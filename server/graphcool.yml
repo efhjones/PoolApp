@@ -21,11 +21,11 @@ functions:
     handler:
       code: src/email-password/loggedInUser.ts
 
-  addNewGame:
+  createNewGame:
     type: resolver
-    schema: scr/new-game/addNewGame.graphql
+    schema: src/new-game/newGame.graphql
     handler:
-      code: src/new-game/addNewGame.ts
+      code: src/new-game/newGame.ts
 
 
 

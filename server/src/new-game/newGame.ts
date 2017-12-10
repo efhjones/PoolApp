@@ -20,7 +20,7 @@ export default async (event: FunctionEvent<EventData>) => {
     const { userId } = event.data
 
     // create new game
-    const gameId = await createGame(api, userId)
+    const gameId = await createNewGame(api, userId)
 
     return { data: { id: gameId,  } }
   } catch (e) {
@@ -28,9 +28,9 @@ export default async (event: FunctionEvent<EventData>) => {
   }
 }
 
-async function createGame(api: GraphQLClient, userId: string): Promise<string> {
+async function createNewGame(api: GraphQLClient, userId: string): Promise<string> {
   const mutation = `
-    mutation createNewGame($userId: String!) {
+    mutation createGame($userId: String!) {
       createGame(
         id: $userId
       ) {
@@ -43,6 +43,7 @@ async function createGame(api: GraphQLClient, userId: string): Promise<string> {
     userId,
   }
 
-  return api.request<{ createGame: Game }>(mutation, variables)
-    .then(r => r.createGame.id)
+  return api.request<{ createNewGame: Game }>(mutation, variables)
+    .then(r => r.createNewGame.id)
 }
+

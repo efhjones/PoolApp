@@ -135,7 +135,10 @@ const AppWithLifecycle = lifecycle({
   componentWillMount() {
     const id = _.get(this.props.data, ['loggedInUser', 'id']);
     if (id) {
+      this.props.navigation.setParams({ isLoggedIn: true });
       this.props.onLogInWithId({ id });
+    } else {
+      this.props.navigation.setParams({ isLoggedIn: false });
     }
   }
 })(App);

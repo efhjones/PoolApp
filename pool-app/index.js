@@ -13,9 +13,10 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloProvider } from 'react-apollo';
 import reducer from './reducer/index';
 import NavigationContainer from './navigation/NavigationContainer';
+import { SIMPLE_API } from './api';
 
 const httpLink = createHttpLink({
-  uri: 'https://api.graph.cool/simple/v1/cja6b9y0y07q50129zgdjekpk'
+  uri: SIMPLE_API
 });
 
 const middlewareLink = setContext(async () => {

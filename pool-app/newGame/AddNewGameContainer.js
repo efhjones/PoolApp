@@ -16,8 +16,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, props) => ({
   onCreateGame(userId) {
-    props.createGame({ variables: { userId } })
-      .then(({ data }) => {
+    props.createGame(userId)
+      .then((response) => {
         debugger;
       }).catch((error) => {
         debugger;
@@ -26,7 +26,7 @@ const mapDispatchToProps = (dispatch, props) => ({
 });
 
 const CREATE_GAME = gql`
-  mutation CreateGame($id: String!) {
+  mutation createGame($id: String!) {
     createGame(userId: $id) {
       id
     }
