@@ -47,10 +47,6 @@ const mapDispatchToProps = (dispatch, props) => ({
         dispatch(AppActions.onSetErrors(error));
       });
   },
-
-  onChangeText(text) {
-    dispatch(AppActions.onChangeText(text));
-  },
   onClearErrors() {
     dispatch(AppActions.onClearErrors());
   },
