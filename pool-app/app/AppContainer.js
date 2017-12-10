@@ -34,7 +34,7 @@ const mapDispatchToProps = (dispatch, props) => ({
   },
   onLogIn(email, password) {
     dispatch(AppActions.onMarkLoading());
-    props.LogInUser({ variables: { email, password } })
+    props.logInUser({ variables: { email, password } })
       .then(({ data }) => {
         const { authenticateUser } = data;
         const { id, token } = authenticateUser;
@@ -89,7 +89,7 @@ const LOGGED_IN_USER = gql`
 
 export default _.flowRight(
   graphql(SIGNUP_EMAIL_USER, { name: 'signUpUser' }),
-  graphql(LOGIN_USER, { name: 'LogInUser' }),
+  graphql(LOGIN_USER, { name: 'logInUser' }),
   graphql(LOGGED_IN_USER, { options: { fetchPolicy: 'network-only' } }),
   connect(mapStateToProps, mapDispatchToProps)
 )(App);
