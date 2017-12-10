@@ -1,8 +1,8 @@
 import React from 'react';
 import {
   StyleSheet,
-  Button,
-  View
+  View,
+  Text
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -17,19 +17,11 @@ const styles = StyleSheet.create({
   }
 });
 
-const AddNewGameButton = ({ id, onCreateGame }) => (
+const NewGame = () => (
   <View style={styles.container}>
-    <Button
-      style={styles.addGameButton}
-      title="New Game"
-      onPress={() => onCreateGame(id)}
-    />
+    <Text>I&rsquo;m the new game screen! Hooray!</Text>
   </View>
 );
 
-AddNewGameButton.propTypes = {
-  id: PropTypes.string.isRequired,
-  onCreateGame: PropTypes.func.isRequired
-};
 
-export default AddNewGameButton;
+export default NewGame;

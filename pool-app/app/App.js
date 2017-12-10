@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Error from '../error/Error';
-import Home from '../home/HomeContainer';
+import HomeContainer from '../home/HomeContainer';
 import Loading from '../loading/Loading';
 
 const styles = StyleSheet.create({
@@ -102,7 +102,7 @@ LoggedOutView.defaultProps = {
 const App = (props) => {
   const isLoggedIn = props.id;
   return (
-    isLoggedIn ? <Home /> : <LoggedOutView {...props} />
+    isLoggedIn ? <HomeContainer navigation={props.navigation} fuck="whatthefuck" /> : <LoggedOutView {...props} />
   );
 };
 
@@ -110,7 +110,8 @@ App.propTypes = {
   data: PropTypes.shape({
     loading: PropTypes.bool.isRequired
   }).isRequired,
-  id: PropTypes.string
+  id: PropTypes.string,
+  navigation: PropTypes.object.isRequired
 };
 
 App.defaultProps = {
