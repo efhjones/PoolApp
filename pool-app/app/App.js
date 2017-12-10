@@ -50,7 +50,7 @@ const LoggedOutView = ({
   <View style={styles.container}>
     <Text>Sign in or create a new account below</Text>
     <TextInput
-      onChangeText={newEmail => onChangeEmail(newEmail)}
+      onChangeText={onChangeEmail}
       onFocus={onClearErrors}
       value={email}
       style={styles.field}
@@ -59,7 +59,7 @@ const LoggedOutView = ({
       keyboardType="email-address"
     />
     <TextInput
-      onChangeText={newPassword => onChangePassword(newPassword)}
+      onChangeText={onChangePassword}
       onFocus={onClearErrors}
       value={password}
       style={styles.field}
