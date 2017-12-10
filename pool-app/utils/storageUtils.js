@@ -9,6 +9,14 @@ export const getToken = async () => {
   }
 };
 
+export const getGameToken = async () => {
+  try {
+    return await AsyncStorage.getItem(CURRENT_GAME_TOKEN);
+  } catch (err) {
+    return err;
+  }
+};
+
 export const saveGameToken = async (gameId) => {
   try {
     return await AsyncStorage.setItem(CURRENT_GAME_TOKEN, gameId);
