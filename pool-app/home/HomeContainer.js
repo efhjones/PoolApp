@@ -5,6 +5,7 @@ import gql from 'graphql-tag';
 import Home from './Home';
 import AppActions from '../app/actions';
 import HomeActions from './actions';
+import { getGameToken } from '../utils/storageUtils';
 
 const mapStateToProps = (state) => {
   const { app, home } = state;
@@ -30,6 +31,14 @@ const mapDispatchToProps = (dispatch, props) => ({
       }).catch((error) => {
         dispatch(AppActions.onSetErrors(error));
       });
+  },
+  maybeEnterGameFlow() {
+    getGameToken().then((gameId) => {
+      if (gameId) {
+        dispatch(HomeActions.onEnterGameFlow(gameId));
+        props.navigation.navigate('NewGame');
+      }
+    });
   }
 });
 

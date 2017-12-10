@@ -5,6 +5,7 @@ import {
   Button,
   View
 } from 'react-native';
+import { lifecycle } from 'recompose';
 import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
@@ -59,4 +60,8 @@ Home.propTypes = {
   id: PropTypes.string.isRequired
 };
 
-export default Home;
+export default lifecycle({
+  componentWillMount() {
+    this.props.maybeEnterGameFlow();
+  }
+})(Home);
