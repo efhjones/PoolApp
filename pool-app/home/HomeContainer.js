@@ -26,7 +26,6 @@ const mapDispatchToProps = (dispatch, props) => ({
         const { createNewGame } = data;
         const gameId = createNewGame.id;
         dispatch(HomeActions.onEnterGameFlow(gameId));
-        debugger;
         props.navigation.navigate('NewGame');
       }).catch((error) => {
         dispatch(AppActions.onSetErrors(error));
