@@ -20,30 +20,39 @@ const styles = StyleSheet.create({
   }
 });
 
+// enter search field for user
+// if no user found, add player button is shown
+// enter user email/name and click add player
 const AddPlayer = ({
-  onAddPlayer, onUpdateName, name, gameId
+  onAddPlayer, onSearchEmail, email, gameId, filteredUsers
 }) => (
   <View style={styles.container}>
     <TextInput
-      onChangeText={onUpdateName}
-      value={name}
+      onChangeText={onSearchEmail}
+      value={email}
       style={styles.field}
       autoCapitalize="none"
-      placeholder="Player Name"
+      placeholder="Player Email"
     />
-    <Button
-      style={styles.createAccountButton}
-      onPress={() => onAddPlayer({ gameId, name })}
-      title="Add Player to Game"
-    />
+    {
+      filteredUsers.map(user => (
+        <Button
+          key={user.email}
+          style={styles.createAccountButton}
+          onPress={() => onAddPlayer({ gameId, email: user.email })}
+          title={user.email}
+        />
+      ))
+    }
   </View>
 );
 
 AddPlayer.propTypes = {
   onAddPlayer: PropTypes.func.isRequired,
-  onUpdateName: PropTypes.func.isRequired,
-  name: PropTypes.string.isRequired,
-  gameId: PropTypes.string.isRequired
+  email: PropTypes.string.isRequired,
+  gameId: PropTypes.string.isRequired,
+  onSearchEmail: PropTypes.func.isRequired,
+  filteredUsers: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 

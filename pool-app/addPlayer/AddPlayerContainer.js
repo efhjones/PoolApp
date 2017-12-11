@@ -15,8 +15,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch, props) => ({
-  onAddPlayer({ gameId, name }) {
-    props.addPlayerToGame({ variables: { gameId, name } })
+  onAddPlayer({ gameId, email }) {
+    props.addPlayerToGame({ variables: { gameId, email } })
       .then((response) => {
         debugger;
       }).catch((err) => {
@@ -33,17 +33,39 @@ mutation AddPlayerToGame($gameId: String!, $name: String!, $email: String) {
 }
 `;
 
-const initialState = {
-  name: ''
-};
+const GET_ALL_PLAYERS = gql`
+query GetPlayers {
+  allUsers{
+    id,
+    email
+  }
+}
+`;
+
+const initialState = ({ allUsers }) => ({
+  email: '',
+  allUsers,
+  filteredUsers: []
+});
 
 const handlers = {
-  onUpdateName: () => name => ({ name })
+  onUpdateName: () => name => ({ name }),
+  onSearchEmail: (state, { getAllUsers }) => (searchEmail) => {
+    const { allUsers } = getAllUsers;
+    const lowerCaseEmail = searchEmail.toLowerCase();
+    const filteredUsers = (allUsers || [])
+      .filter(({ email }) => email.toLowerCase().includes(lowerCaseEmail));
+    return {
+      filteredUsers,
+      email: searchEmail
+    };
+  }
 };
 
 
 export default _.flowRight(
   graphql(ADD_PLAYER_TO_GAME, { name: 'addPlayerToGame' }),
+  graphql(GET_ALL_PLAYERS, { name: 'getAllUsers' }),
   connect(mapStateToProps, mapDispatchToProps),
   withStateHandlers(initialState, handlers),
 )(AddPlayer);
