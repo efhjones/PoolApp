@@ -102,7 +102,9 @@ LoggedOutView.defaultProps = {
 const App = (props) => {
   const isLoggedIn = props.id;
   return (
-    isLoggedIn ? <HomeContainer navigation={props.navigation} fuck="whatthefuck" /> : <LoggedOutView {...props} />
+    isLoggedIn
+      ? <HomeContainer navigation={props.navigation} />
+      : <LoggedOutView {...props} />
   );
 };
 
