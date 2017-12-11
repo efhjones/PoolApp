@@ -9,7 +9,7 @@ type User @model {
   createdAt: DateTime!
   updatedAt: DateTime!
 
-  email: String @isUnique
+  email: String! @isUnique
   password: String
 
   games: [Game!]! @relation(name: "UserInGame")
