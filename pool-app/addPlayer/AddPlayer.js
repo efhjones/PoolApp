@@ -39,7 +39,7 @@ const AddPlayer = ({
         <Button
           key={user.email}
           style={styles.createAccountButton}
-          onPress={() => onAddPlayer({ gameId, email: user.email })}
+          onPress={() => onAddPlayer({ gameId, id: user.id })}
           title={user.email}
         />
       ))

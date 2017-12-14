@@ -15,8 +15,8 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch, props) => ({
-  onAddPlayer({ gameId, email }) {
-    props.addPlayerToGame({ variables: { gameId, email } })
+  onAddPlayer({ gameId, id }) {
+    props.addPlayerToGame({ variables: { gameId, userId: id } })
       .then((response) => {
         debugger;
       }).catch((err) => {
@@ -26,9 +26,9 @@ const mapDispatchToProps = (dispatch, props) => ({
 });
 
 const ADD_PLAYER_TO_GAME = gql`
-mutation AddPlayerToGame($gameId: String!, $name: String!, $email: String) {
-  addToUserInGame(gamesGameId: $gameId, name: $name, email: $email) {
-    id
+mutation AddPlayerToGame($userId: String! $gameId: String!) {
+  addPlayerToGame(userId: $userId, gameId: $gameId) {
+    gameId
   }
 }
 `;
