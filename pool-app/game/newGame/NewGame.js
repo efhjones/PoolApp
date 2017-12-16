@@ -49,5 +49,9 @@ const NewGame = ({ onAddPlayer }) => (
   </View>
 );
 
+NewGame.propTypes = {
+  onAddPlayer: PropTypes.func.isRequired
+};
+
 
 export default NewGame;

@@ -1,7 +1,5 @@
-import { graphql } from 'react-apollo';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import gql from 'graphql-tag';
 import NewGame from './NewGame';
 
 const mapStateToProps = (state) => {
