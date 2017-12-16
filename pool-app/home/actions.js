@@ -6,10 +6,6 @@ const AppActions = {
     saveGameToken(gameId);
     return (dispatch) => {
       dispatch({
-        type: ActionTypes.ON_SET_GAME_ID,
-        gameId
-      });
-      dispatch({
         type: ActionTypes.ON_ENTER_GAME_FLOW
       });
     };

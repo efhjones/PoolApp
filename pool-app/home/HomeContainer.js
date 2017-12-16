@@ -4,15 +4,15 @@ import _ from 'lodash';
 import gql from 'graphql-tag';
 import Home from './Home';
 import AppActions from '../app/actions';
+import GameActions from '../game/actions';
 import HomeActions from './actions';
 import { getGameToken } from '../utils/storageUtils';
 
 const mapStateToProps = (state) => {
-  const { app, home } = state;
-  const { gameId } = home;
+  const { app, game } = state;
   const { id } = app;
   return {
-    gameId,
+    gameId: game.id,
     id
   };
 };
@@ -36,6 +36,7 @@ const mapDispatchToProps = (dispatch, props) => ({
     getGameToken().then((gameId) => {
       if (gameId) {
         dispatch(HomeActions.onEnterGameFlow(gameId));
+        dispatch(GameActions.onSetGameId(gameId));
         props.navigation.navigate('NewGame');
       }
     });
