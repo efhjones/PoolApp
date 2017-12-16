@@ -7,10 +7,10 @@ import AddPlayer from './AddPlayer';
 
 
 const mapStateToProps = (state) => {
-  const { home } = state;
-  const { gameId } = home;
+  const { game } = state;
+  const { id } = game;
   return {
-    gameId
+    gameId: id
   };
 };
 
@@ -42,11 +42,21 @@ query GetPlayers {
 }
 `;
 
-const initialState = ({ allUsers }) => ({
+const PLAYERS_IN_GAME = gql`
+query PlayersInGame ($id: ID!){
+  Game(id: $id) {
+    players {
+      email,
+      id
+    }
+  }
+}
+`;
+
+const initialState = {
   email: '',
-  allUsers,
   filteredUsers: []
-});
+};
 
 const handlers = {
   onUpdateName: () => name => ({ name }),
@@ -62,10 +72,13 @@ const handlers = {
   }
 };
 
-
 export default _.flowRight(
   graphql(ADD_PLAYER_TO_GAME, { name: 'addPlayerToGame' }),
   graphql(GET_ALL_PLAYERS, { name: 'getAllUsers' }),
   connect(mapStateToProps, mapDispatchToProps),
+  graphql(PLAYERS_IN_GAME, {
+    options: ({ gameId }) => ({ variables: { id: gameId } }),
+    name: 'playersInGame'
+  }),
   withStateHandlers(initialState, handlers),
 )(AddPlayer);
