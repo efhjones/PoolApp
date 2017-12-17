@@ -8,19 +8,20 @@ import AddPlayer from './AddPlayer';
 
 const mapStateToProps = (state) => {
   const { game } = state;
-  const { id } = game;
+  const { id, players } = game;
   return {
-    gameId: id
+    gameId: id,
+    players
   };
 };
 
 const mapDispatchToProps = (dispatch, props) => ({
-  onAddPlayer({ gameId, id }) {
-    props.addPlayerToGame({ variables: { gameId, userId: id } })
-      .then((response) => {
-        debugger;
+  onAddPlayer({ gameId, userId }) {
+    props.addPlayerToGame({ variables: { gameId, userId } })
+      .then(() => {
+        dispatch(GameActions.onAddPlayerToGame(userId));
       }).catch((err) => {
-        debugger;
+        dispatch(AppActions.onSetErrors(err));
       });
   }
 });
