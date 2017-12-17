@@ -18,6 +18,12 @@ const gameReducer = createReducer(initialState, {
       ...state,
       id
     };
+  },
+  [ActionTypes.SEED_STORE_PLAYERS](state, { players }) {
+    return {
+      ...state,
+      players: state.players.concat(players)
+    };
   }
 });
 

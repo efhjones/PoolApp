@@ -12,6 +12,12 @@ const GameActions = {
       type: ActionTypes.ON_ADD_PLAYER,
       playerId
     };
+  },
+  seedStorePlayers(players) {
+    return {
+      type: ActionTypes.SEED_STORE_PLAYERS,
+      players
+    };
   }
 };
 

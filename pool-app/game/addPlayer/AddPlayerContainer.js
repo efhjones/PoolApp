@@ -4,7 +4,9 @@ import { withStateHandlers } from 'recompose';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import AddPlayer from './AddPlayer';
-
+import GameActions from '../actions';
+import AppActions from '../../app/actions';
+import Loading from '../../loading/Loading';
 
 const mapStateToProps = (state) => {
   const { game } = state;
@@ -23,6 +25,11 @@ const mapDispatchToProps = (dispatch, props) => ({
       }).catch((err) => {
         dispatch(AppActions.onSetErrors(err));
       });
+  },
+  seedStoreWithGameData(playersInGame) {
+    const { Game } = playersInGame;
+    const { players } = Game;
+    dispatch(GameActions.seedStorePlayers(players));
   }
 });
 
