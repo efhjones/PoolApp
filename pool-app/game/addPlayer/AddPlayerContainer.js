@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { withStateHandlers } from 'recompose';
+import { withStateHandlers, branch, renderComponent, lifecycle } from 'recompose';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import AddPlayer from './AddPlayer';
@@ -89,4 +89,17 @@ export default _.flowRight(
     name: 'playersInGame'
   }),
   withStateHandlers(initialState, handlers),
+  branch(
+    (props) => {
+      const { playersInGame } = props;
+      return playersInGame.loading;
+    },
+    renderComponent(Loading)
+  ),
+  lifecycle({
+    componentWillMount() {
+      const { playersInGame } = this.props;
+      this.props.seedStoreWithGameData(playersInGame);
+    }
+  })
 )(AddPlayer);

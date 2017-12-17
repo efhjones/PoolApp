@@ -38,7 +38,7 @@ const AddPlayer = ({
   return (
     <View style={styles.container}>
       <View style={styles.playersInGameContainer}>
-        {currentPlayersInGame.map(player => <Text>{player.email}</Text>)}
+        {currentPlayersInGame.map(player => <Text key={player.email}>{player.email}</Text>)}
       </View>
       <TextInput
         onChangeText={onSearchEmail}
@@ -52,7 +52,7 @@ const AddPlayer = ({
         <Button
           key={user.email}
           style={styles.createAccountButton}
-          onPress={() => onAddPlayer({ gameId, id: user.id })}
+          onPress={() => onAddPlayer({ gameId, userId: user.id })}
           title={user.email}
         />
       ))
@@ -69,11 +69,11 @@ AddPlayer.propTypes = {
   onSearchEmail: PropTypes.func.isRequired,
   filteredUsers: PropTypes.arrayOf(PropTypes.object).isRequired,
   playersInGame: PropTypes.shape({
-    Game: {
+    Game: PropTypes.shape({
       players: PropTypes.arrayOf(PropTypes.shape({
         email: PropTypes.string.isRequired
       }))
-    }
+    })
   })
 };
 
