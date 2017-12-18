@@ -27,7 +27,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     width: 200,
     marginBottom: 10,
-    padding: 10
+    padding: 10,
+    color: PLATINUM
   },
   signInButton: {
     display: 'flex'
