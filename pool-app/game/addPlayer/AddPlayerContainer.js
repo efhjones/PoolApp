@@ -1,12 +1,14 @@
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { withStateHandlers, branch, renderComponent, lifecycle } from 'recompose';
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
 import AddPlayer from './AddPlayer';
 import GameActions from '../actions';
 import AppActions from '../../app/actions';
 import Loading from '../../loading/Loading';
+import withPlayersInGame from '../../graphql/withPlayersInGame';
+import withAllUsers from '../../graphql/withAllUsers';
+import addPlayerToGame from '../../graphql/addPlayerToGame';
+import removePlayerFromGame from '../../graphql/removePlayerFromGame';
 
 const mapStateToProps = (state) => {
   const { game } = state;
@@ -47,60 +49,6 @@ const mapDispatchToProps = (dispatch, props) => ({
   }
 });
 
-const ADD_PLAYER_TO_GAME = gql`
-  mutation addUserToGame($userId:ID!, $gameId:ID!){
-    addToUserInGame(
-      playersUserId: $userId,
-      gamesGameId: $gameId
-    ) {
-      gamesGame {
-        id,
-        players {
-          id,
-          email
-        }
-      }
-    }
-  }
-`;
-
-const REMOVE_PLAYER_FROM_GAME = gql`
-  mutation removePlayerFromGame($userId: ID!, $gameId: ID!) {
-    removeFromUserInGame(
-      playersUserId: $userId,
-      gamesGameId: $gameId
-  ) {
-    gamesGame {
-      id,
-      players {
-        id,
-        email
-      }
-    }
-  }
-  }
-`;
-
-const GET_ALL_PLAYERS = gql`
-query GetPlayers {
-  allUsers{
-    id,
-    email
-  }
-}
-`;
-
-const PLAYERS_IN_GAME = gql`
-query PlayersInGame ($id: ID!){
-  Game(id: $id) {
-    players {
-      email,
-      id
-    }
-  }
-}
-`;
-
 const initialState = {
   email: '',
   filteredUsers: []
@@ -121,16 +69,11 @@ const handlers = {
 };
 
 export default _.flowRight(
-  graphql(ADD_PLAYER_TO_GAME, { name: 'addPlayerToGame' }),
-  graphql(GET_ALL_PLAYERS, { name: 'getAllUsers' }),
-  graphql(REMOVE_PLAYER_FROM_GAME, {
-    name: 'removePlayerFromGame'
-  }),
+  addPlayerToGame,
+  withAllUsers,
+  removePlayerFromGame,
   connect(mapStateToProps, mapDispatchToProps),
-  graphql(PLAYERS_IN_GAME, {
-    options: ({ gameId }) => ({ variables: { id: gameId } }),
-    name: 'playersInGame'
-  }),
+  withPlayersInGame,
   withStateHandlers(initialState, handlers),
   branch(
     (props) => {
