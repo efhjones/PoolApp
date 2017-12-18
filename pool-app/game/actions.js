@@ -7,15 +7,9 @@ const GameActions = {
       id
     };
   },
-  onAddPlayerToGame(playerId) {
+  updatePlayers(players) {
     return {
-      type: ActionTypes.ON_ADD_PLAYER,
-      playerId
-    };
-  },
-  seedStorePlayers(players) {
-    return {
-      type: ActionTypes.SEED_STORE_PLAYERS,
+      type: ActionTypes.UPDATE_PLAYERS,
       players
     };
   }

@@ -16,12 +16,26 @@ const mapStateToProps = (state) => {
     players
   };
 };
+const pathToPlayers = ['gamesGame', 'players'];
+const getPlayers = responseObj => _.get(responseObj, pathToPlayers, {});
 
 const mapDispatchToProps = (dispatch, props) => ({
   onAddPlayer({ gameId, userId }) {
     props.addPlayerToGame({ variables: { gameId, userId } })
-      .then(() => {
-        dispatch(GameActions.onAddPlayerToGame(userId));
+      .then(({ data }) => {
+        const { addToUserInGame } = data;
+        const players = getPlayers(addToUserInGame);
+        dispatch(GameActions.updatePlayers(players));
+      }).catch((err) => {
+        dispatch(AppActions.onSetErrors(err));
+      });
+  },
+  onRemovePlayer({ gameId, userId }) {
+    props.removePlayerFromGame({ variables: { gameId, userId } })
+      .then(({ data }) => {
+        const { removeFromUserInGame } = data;
+        const players = getPlayers(removeFromUserInGame);
+        dispatch(GameActions.updatePlayers(players));
       }).catch((err) => {
         dispatch(AppActions.onSetErrors(err));
       });
@@ -29,16 +43,42 @@ const mapDispatchToProps = (dispatch, props) => ({
   seedStoreWithGameData(playersInGame) {
     const { Game } = playersInGame;
     const { players } = Game;
-    dispatch(GameActions.seedStorePlayers(players));
+    dispatch(GameActions.updatePlayers(players));
   }
 });
 
 const ADD_PLAYER_TO_GAME = gql`
-mutation AddPlayerToGame($userId: String! $gameId: String!) {
-  addPlayerToGame(userId: $userId, gameId: $gameId) {
-    gameId
+  mutation addUserToGame($userId:ID!, $gameId:ID!){
+    addToUserInGame(
+      playersUserId: $userId,
+      gamesGameId: $gameId
+    ) {
+      gamesGame {
+        id,
+        players {
+          id,
+          email
+        }
+      }
+    }
   }
-}
+`;
+
+const REMOVE_PLAYER_FROM_GAME = gql`
+  mutation removePlayerFromGame($userId: ID!, $gameId: ID!) {
+    removeFromUserInGame(
+      playersUserId: $userId,
+      gamesGameId: $gameId
+  ) {
+    gamesGame {
+      id,
+      players {
+        id,
+        email
+      }
+    }
+  }
+  }
 `;
 
 const GET_ALL_PLAYERS = gql`
@@ -83,6 +123,9 @@ const handlers = {
 export default _.flowRight(
   graphql(ADD_PLAYER_TO_GAME, { name: 'addPlayerToGame' }),
   graphql(GET_ALL_PLAYERS, { name: 'getAllUsers' }),
+  graphql(REMOVE_PLAYER_FROM_GAME, {
+    name: 'removePlayerFromGame'
+  }),
   connect(mapStateToProps, mapDispatchToProps),
   graphql(PLAYERS_IN_GAME, {
     options: ({ gameId }) => ({ variables: { id: gameId } }),

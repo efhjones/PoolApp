@@ -1,8 +1,0 @@
-
-type AddUserToGamePayload {
-  gameId: String!
-}
-
-extend type Mutation {
-  addPlayerToGame(userId: String!, gameId: String!): AddUserToGamePayload
-}

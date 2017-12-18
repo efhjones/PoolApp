@@ -27,13 +27,6 @@ functions:
     handler:
       code: src/new-game/newGame.ts
 
-  addPlayerToGame: 
-    type: resolver
-    schema: src/add-player-to-game/addPlayer.graphql
-    handler:
-      code: src/add-player-to-game/addPlayer.ts
-
-
 
 # Model/Relation permissions are used to limit the API access
 # To take the burden of thinking about those while development, we

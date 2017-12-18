@@ -21,10 +21,27 @@ const styles = StyleSheet.create({
     padding: 10
   },
   playersInGameContainer: {
-    height: 100,
-    backgroundColor: 'white',
-    marginBottom: 20,
     width: '80%'
+  },
+  searchHeader: {
+
+  },
+  playersHeader: {
+    fontSize: 20
+  },
+  playerInGame: {
+    color: '#E8E9EB',
+    backgroundColor: '#202B4C',
+    alignSelf: 'flex-start',
+    padding: 5,
+    marginTop: 5,
+    marginBottom: 5,
+    fontWeight: '600'
+  },
+  userBar: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center'
   }
 });
 
@@ -32,14 +49,18 @@ const styles = StyleSheet.create({
 // if no user found, add player button is shown
 // enter user email/name and click add player
 const AddPlayer = ({
-  onAddPlayer, onSearchEmail, email, gameId, filteredUsers, playersInGame
+  onAddPlayer,
+  onSearchEmail,
+  email,
+  gameId,
+  filteredUsers,
+  onRemovePlayer,
+  players
 }) => {
-  const currentPlayersInGame = _.get(playersInGame, ['Game', 'players'], []);
+  const currentPlayers = _.values(players);
   return (
     <View style={styles.container}>
-      <View style={styles.playersInGameContainer}>
-        {currentPlayersInGame.map(player => <Text key={player.email}>{player.email}</Text>)}
-      </View>
+      <Text style={styles.searchHeader}>Search for player by email</Text>
       <TextInput
         onChangeText={onSearchEmail}
         value={email}
@@ -47,16 +68,28 @@ const AddPlayer = ({
         autoCapitalize="none"
         placeholder="Player Email"
       />
+      <View style={styles.playersInGameContainer}>
+        <Text style={styles.playersHeader}>Players in this game:</Text>
+        {currentPlayers.map(player => (
+          <View key={player.email} style={styles.userBar}>
+            <Button
+              onPress={() => onRemovePlayer({ gameId, userId: player.id })}
+              title="X"
+              color="red"
+            />
+            <Text style={styles.playerInGame}>{player.email}</Text>
+          </View>
+          ))}
+      </View>
       {
-      filteredUsers.map(user => (
-        <Button
-          key={user.email}
-          style={styles.createAccountButton}
-          onPress={() => onAddPlayer({ gameId, userId: user.id })}
-          title={user.email}
-        />
-      ))
-    }
+        filteredUsers.map(user => (
+          <Button
+            key={user.email}
+            onPress={() => onAddPlayer({ gameId, userId: user.id })}
+            title={user.email}
+          />
+        ))
+      }
     </View>
   );
 };
@@ -64,21 +97,11 @@ const AddPlayer = ({
 
 AddPlayer.propTypes = {
   onAddPlayer: PropTypes.func.isRequired,
+  onRemovePlayer: PropTypes.func.isRequired,
   email: PropTypes.string.isRequired,
   gameId: PropTypes.string.isRequired,
   onSearchEmail: PropTypes.func.isRequired,
-  filteredUsers: PropTypes.arrayOf(PropTypes.object).isRequired,
-  playersInGame: PropTypes.shape({
-    Game: PropTypes.shape({
-      players: PropTypes.arrayOf(PropTypes.shape({
-        email: PropTypes.string.isRequired
-      }))
-    })
-  })
-};
-
-AddPlayer.defaultProps = {
-  playersInGame: []
+  filteredUsers: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 

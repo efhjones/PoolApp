@@ -1,3 +1,2 @@
-export const ON_ADD_PLAYER = 'ON_ADD_PLAYER';
 export const ON_SET_GAME_ID = 'ON_SET_GAME_ID';
-export const SEED_STORE_PLAYERS = 'SEED_STORE_PLAYERS';
+export const UPDATE_PLAYERS = 'UPDATE_PLAYERS';
