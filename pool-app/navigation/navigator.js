@@ -1,25 +1,26 @@
-import { StackNavigator } from 'react-navigation';
+import { TabNavigator } from 'react-navigation';
 import AppContainer from '../app/AppContainer';
 import NewGameContainer from '../game/newGame/NewGameContainer';
-import AddPlayerContainer from '../game/addPlayer/AddPlayerContainer';
+import StatsContainer from '../stats/StatsContainer';
+import { MIDNIGHT_BLUE } from '../styles/constants';
 
-export default StackNavigator({
+export default TabNavigator({
   Home: {
-    screen: AppContainer,
-    navigationOptions: {
-      header: () => null
-    }
+    screen: AppContainer
   },
-  NewGame: {
-    screen: NewGameContainer,
-    navigationOptions: {
-      header: () => null
-    }
+  Stats: {
+    screen: StatsContainer
   },
-  AddPlayer: {
-    screen: AddPlayerContainer,
-    navigationOptions: {
-      header: () => null
+  Game: {
+    screen: NewGameContainer
+  }
+}, {
+  tabBarOptions: {
+    activeTintColor: MIDNIGHT_BLUE,
+    showLabel: true,
+    showIcon: true,
+    labelStyle: {
+      fontSize: 20
     }
   }
 });
