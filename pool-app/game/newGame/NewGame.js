@@ -6,7 +6,7 @@ import {
   Button
 } from 'react-native';
 import PropTypes from 'prop-types';
-
+import AddPlayerContainer from '../addPlayer/AddPlayerContainer';
 
 const styles = StyleSheet.create({
   container: {
@@ -36,21 +36,13 @@ const styles = StyleSheet.create({
 
 });
 
-const NewGame = ({ onAddPlayer }) => (
+const NewGame = () => (
   <View style={styles.container}>
-    <View style={styles.newGameHeaderContainer}>
-      <Text style={styles.newGameHeader}>Start a New Game</Text>
-    </View>
-    <Button
-      title="Add a player"
-      onPress={onAddPlayer}
-      style={styles.addPlayerButton}
-    />
+    <AddPlayerContainer />
   </View>
 );
 
 NewGame.propTypes = {
-  onAddPlayer: PropTypes.func.isRequired
 };
 
 

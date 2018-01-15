@@ -16,9 +16,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch, props) => ({
-  onAddPlayer() {
-    props.navigation.navigate('AddPlayer');
-  }
+
 });
 
 
