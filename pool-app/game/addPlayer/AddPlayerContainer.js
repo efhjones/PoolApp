@@ -43,9 +43,10 @@ const mapDispatchToProps = (dispatch, props) => ({
       });
   },
   seedStoreWithGameData(playersInGame) {
-    const { Game } = playersInGame;
-    const { players } = Game;
-    dispatch(GameActions.updatePlayers(players));
+    const players = _.get(playersInGame, ['Game', 'players'], {});
+    if (!_.isEmpty(players)) {
+      dispatch(GameActions.updatePlayers(players));
+    }
   }
 });
 
@@ -78,7 +79,7 @@ export default _.flowRight(
   branch(
     (props) => {
       const { playersInGame } = props;
-      return playersInGame.loading;
+      return playersInGame && playersInGame.loading;
     },
     renderComponent(Loading)
   ),
