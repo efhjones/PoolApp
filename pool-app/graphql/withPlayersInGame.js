@@ -14,5 +14,6 @@ query PlayersInGame ($id: ID!){
 
 export default graphql(PLAYERS_IN_GAME, {
   options: ({ gameId }) => ({ variables: { id: gameId } }),
+  skip: ({ gameId }) => !gameId,
   name: 'playersInGame'
 });
