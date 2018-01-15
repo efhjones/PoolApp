@@ -101,7 +101,11 @@ AddPlayer.propTypes = {
   email: PropTypes.string.isRequired,
   gameId: PropTypes.string.isRequired,
   onSearchEmail: PropTypes.func.isRequired,
-  filteredUsers: PropTypes.arrayOf(PropTypes.object).isRequired
+  filteredUsers: PropTypes.arrayOf(PropTypes.object).isRequired,
+  players: PropTypes.shape({
+    email: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired
+  }).isRequired
 };
 
 
