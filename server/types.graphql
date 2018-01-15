@@ -26,6 +26,7 @@ type Game @model {
   people: [User!]! @relation(name: "UserInGame")
   innings: [Inning!]! @relation(name: "InningInGame")
   winner: User @relation(name: "GameWinner")
+  inProgress: Boolean! @migrationValue(value: false)
 }
 
 type Inning @model {
