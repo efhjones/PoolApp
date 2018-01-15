@@ -5,7 +5,6 @@ import {
   Button,
   View
 } from 'react-native';
-import { lifecycle } from 'recompose';
 import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
@@ -40,9 +39,8 @@ AddNewGameButton.propTypes = {
 };
 
 
-const Home = ({ onLogOut, onCreateNewGame, id }) => (
+const Home = ({ onLogOut }) => (
   <View style={styles.container}>
-    <AddNewGameButton onCreateNewGame={onCreateNewGame} id={id} />
     <Text style={styles.welcome}>
     Hi! I&apos;m the home page!
     </Text>
@@ -55,13 +53,7 @@ const Home = ({ onLogOut, onCreateNewGame, id }) => (
 );
 
 Home.propTypes = {
-  onLogOut: PropTypes.func.isRequired,
-  onCreateNewGame: PropTypes.func.isRequired,
-  id: PropTypes.string.isRequired
+  onLogOut: PropTypes.func.isRequired
 };
 
-export default lifecycle({
-  componentWillMount() {
-    this.props.maybeEnterGameFlow();
-  }
-})(Home);
+export default Home;

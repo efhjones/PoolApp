@@ -1,7 +1,7 @@
 import { TabNavigator } from 'react-navigation';
 import AppContainer from '../app/AppContainer';
-import NewGameContainer from '../game/newGame/NewGameContainer';
 import StatsContainer from '../stats/StatsContainer';
+import GameContainer from '../game/GameContainer';
 import { MIDNIGHT_BLUE } from '../styles/constants';
 
 export default TabNavigator({
@@ -12,7 +12,7 @@ export default TabNavigator({
     screen: StatsContainer
   },
   Game: {
-    screen: NewGameContainer
+    screen: GameContainer
   }
 }, {
   tabBarOptions: {

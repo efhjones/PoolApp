@@ -1,11 +1,8 @@
 import React from 'react';
 import {
   StyleSheet,
-  View,
-  Text,
-  Button
+  View
 } from 'react-native';
-import PropTypes from 'prop-types';
 import AddPlayerContainer from '../addPlayer/AddPlayerContainer';
 
 const styles = StyleSheet.create({

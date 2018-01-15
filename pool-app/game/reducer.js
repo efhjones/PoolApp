@@ -4,7 +4,8 @@ import * as ActionTypes from './actionTypes';
 
 const initialState = {
   id: null,
-  players: {}
+  players: {},
+  inProgress: false
 };
 
 const gameReducer = createReducer(initialState, {
