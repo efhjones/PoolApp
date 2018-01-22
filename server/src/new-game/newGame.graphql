@@ -5,6 +5,7 @@ type CreateGamePayload {
   players: [Int]!
   innings: [Int]!
   winner: Int
+  teams: [Int]!
 }
 
 extend type Mutation {
