@@ -62,9 +62,14 @@ const NewGame = ({
   teams,
   addingToTeamId,
   onRemoveTeam,
-  onAddTeam
+  onAddTeam,
+  onDeleteGame
 }) => (
   <View style={styles.container}>
+    <Button
+      onPress={() => onDeleteGame()}
+      title="Delete game"
+    />
     {
       teams.map((team, i) => (
         <View key={team.id}>
@@ -134,6 +139,7 @@ NewGame.propTypes = {
   onRemovePlayer: PropTypes.func.isRequired,
   onRemoveTeam: PropTypes.func.isRequired,
   onAddTeam: PropTypes.func.isRequired,
+  onDeleteGame: PropTypes.func.isRequired,
   email: PropTypes.string.isRequired,
   filteredUsers: PropTypes.arrayOf(PropTypes.object).isRequired,
   isSearchModalOpen: PropTypes.bool.isRequired,
@@ -153,7 +159,6 @@ NewGame.propTypes = {
 
 NewGame.defaultProps = {
   gameId: null,
-
   addingToTeamId: null
 };
 
@@ -187,7 +192,6 @@ const handlers = {
 };
 
 export default compose(
-  withStateHandlers(initialState, handlers),
   lifecycle({
     componentWillMount() {
       const isGameLoading = _.get(this.props, ['getGame', 'loading'], false);
@@ -195,8 +199,20 @@ export default compose(
       const game = _.get(this.props, pathToGame, null);
       if (hasGameId && !isGameLoading) {
         this.props.updateGame(game);
+      } else {
+        const { userId } = this.props;
+        if (userId) {
+          this.props.createOrResumeGame(userId);
+        }
+      }
+    },
+    componentWillReceiveProps(nextProps) {
+      const { userId, gameId } = nextProps;
+      if (userId && !gameId) {
+        this.props.createOrResumeGame(userId);
       }
     }
-  })
+  }),
+  withStateHandlers(initialState, handlers),
 )(NewGame);
 
