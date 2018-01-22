@@ -37,6 +37,17 @@ const gameReducer = createReducer(initialState, {
       if (stateTeam.id === id) {
         return null;
       }
+      return stateTeam;
+    }));
+    return {
+      ...state,
+      teams: newTeams
+    };
+  },
+  [ActionTypes.UPDATE_GAME](state, { game }) {
+    return {
+      ...state,
+      ...game
     };
   }
 });
