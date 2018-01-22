@@ -1,16 +1,8 @@
-import { lifecycle, compose, branch, renderComponent } from 'recompose';
-import _ from 'lodash';
+import { branch, renderComponent } from 'recompose';
 import NewGameContainer from './newGame/NewGameContainer';
 import ActiveGameContainer from './activeGame/ActiveGameContainer';
 
-export default compose(lifecycle({
-  componentWillMount() {
-    this.props.createOrResumeGame();
-  }
-}), branch(
-  (props) => {
-    const isGameInProgress = _.get(props, ['getGame', 'Game', 'inProgress'], false);
-    return isGameInProgress;
-  },
+export default branch(
+  props => props.isGameInProgress,
   renderComponent(ActiveGameContainer)
-))(NewGameContainer);
+)(NewGameContainer);
