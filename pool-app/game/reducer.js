@@ -28,8 +28,14 @@ const gameReducer = createReducer(initialState, {
     });
     return {
       ...state,
-      players: {
-        ...playerObjs
+      teams
+    };
+  },
+  [ActionTypes.REMOVE_TEAM](state, { id }) {
+    const { teams } = state;
+    const newTeams = _.compact(teams.map((stateTeam) => {
+      if (stateTeam.id === id) {
+        return null;
       }
     };
   }
