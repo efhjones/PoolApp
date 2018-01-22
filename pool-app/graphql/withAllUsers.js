@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 
 const GET_ALL_PLAYERS = gql`
 query GetPlayers {
-  allUsers{
+  allUsers {
     id,
     email
   }
