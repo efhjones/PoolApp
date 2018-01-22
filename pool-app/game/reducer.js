@@ -5,6 +5,7 @@ import * as ActionTypes from './actionTypes';
 const initialState = {
   id: null,
   players: {},
+  teams: [],
   inProgress: false
 };
 
@@ -15,8 +16,16 @@ const gameReducer = createReducer(initialState, {
       id
     };
   },
-  [ActionTypes.UPDATE_PLAYERS](state, { players }) {
-    const playerObjs = _.keyBy(players, player => player.id);
+  [ActionTypes.UPDATE_TEAM_PLAYERS](state, { team }) {
+    const teams = _.map(state.teams, (stateTeam) => {
+      if (stateTeam.id === team.id) {
+        return {
+          ...stateTeam,
+          players: team.players
+        };
+      }
+      return stateTeam;
+    });
     return {
       ...state,
       players: {

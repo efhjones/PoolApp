@@ -7,10 +7,22 @@ const GameActions = {
       id
     };
   },
-  updatePlayers(players) {
+  updateTeamPlayers(team) {
     return {
-      type: ActionTypes.UPDATE_PLAYERS,
-      players
+      type: ActionTypes.UPDATE_TEAM_PLAYERS,
+      team
+    };
+  },
+  removeTeam(id) {
+    return {
+      type: ActionTypes.REMOVE_TEAM,
+      id
+    };
+  },
+  updateGame(game) {
+    return {
+      type: ActionTypes.UPDATE_GAME,
+      game
     };
   }
 };
