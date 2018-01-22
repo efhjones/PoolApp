@@ -2,8 +2,9 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { branch, renderComponent } from 'recompose';
 import NewGame from './NewGame';
-import GameActions from '../actions';
 import AppActions from '../../app/actions';
+import { getGameToken, deleteGameToken } from '../../utils/storageUtils';
+import GameActions from '../actions';
 import Loading from '../../loading/Loading';
 import withGame from '../../graphql/withGame';
 import withAllUsers from '../../graphql/withAllUsers';
@@ -62,6 +63,13 @@ const mapDispatchToProps = (dispatch, props) => ({
   },
   updateGame(game) {
     dispatch(GameActions.updateGame(game));
+  },
+  onDeleteGame() {
+    deleteGameToken().then(() => {
+      dispatch(GameActions.deleteGame());
+    }).catch((err) => {
+      dispatch(AppActions.onSetErrors(err));
+    });
   }
 });
 

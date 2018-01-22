@@ -49,6 +49,12 @@ const gameReducer = createReducer(initialState, {
       ...state,
       ...game
     };
+  },
+  [ActionTypes.DELETE_GAME](state) {
+    return {
+      ...state,
+      ...initialState
+    };
   }
 });
 
