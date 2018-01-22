@@ -3,7 +3,7 @@ import gql from 'graphql-tag';
 
 
 const CREATE_GAME = gql`
-  mutation CreateGame($userId: String!) {
+  mutation CreateGame($userId: ID!) {
     createNewGame(userId: $userId) {
       id
     }

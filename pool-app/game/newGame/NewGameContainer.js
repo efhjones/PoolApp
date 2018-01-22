@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { branch, renderComponent } from 'recompose';
+import { branch, renderComponent, compose } from 'recompose';
 import NewGame from './NewGame';
 import AppActions from '../../app/actions';
 import { getGameToken, deleteGameToken } from '../../utils/storageUtils';
@@ -12,17 +12,36 @@ import addPlayerToTeam from '../../graphql/addPlayerToTeam';
 import removePlayerFromTeam from '../../graphql/removePlayerFromTeam';
 import removeTeam from '../../graphql/removeTeam';
 import addTeamToGame from '../../graphql/addTeamToGame';
+import createGame from '../../graphql/createGame';
 
 const mapStateToProps = (state) => {
-  const { game } = state;
+  const { game, app } = state;
   const { id, teams } = game;
   return {
     gameId: id,
-    teams
+    teams,
+    userId: app.id
   };
 };
 
 const mapDispatchToProps = (dispatch, props) => ({
+  createOrResumeGame(userId) {
+    getGameToken().then((token) => {
+      if (token) {
+        dispatch(GameActions.onSetGameId(token));
+      } else {
+        props.createGame({ variables: { userId } }).then(({ data }) => {
+          const { createNewGame } = data;
+          const gameId = createNewGame.id;
+          dispatch(GameActions.onSetGameId(gameId));
+        })
+          .catch((err) => {
+            debugger;
+            dispatch(AppActions.onSetErrors(err));
+          });
+      }
+    });
+  },
   onAddPlayer({ userId, teamId }) {
     props.addPlayerToTeam({ variables: { userId, teamId } })
       .then(({ data }) => {
@@ -73,12 +92,13 @@ const mapDispatchToProps = (dispatch, props) => ({
   }
 });
 
-export default _.flowRight(
+export default compose(
   addPlayerToTeam,
   withAllUsers,
   removePlayerFromTeam,
   removeTeam,
   addTeamToGame,
+  createGame,
   connect(mapStateToProps, mapDispatchToProps),
   withGame,
   branch(
