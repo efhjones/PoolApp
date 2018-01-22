@@ -4,11 +4,15 @@ import gql from 'graphql-tag';
 const GET_GAME = gql`
 query GetGame ($id: ID!){
   Game(id: $id) {
+    id,
     inProgress,
-    players {
+    teams {
       id,
-      email
-    },
+      players {
+        id,
+        email
+      }
+    }
     innings {
       id
     }
