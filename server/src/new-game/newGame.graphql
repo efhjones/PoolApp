@@ -1,13 +1,8 @@
 type CreateGamePayload {
   id: ID!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  players: [Int]!
-  innings: [Int]!
-  winner: Int
-  teams: [Int]!
 }
 
 extend type Mutation {
-  createNewGame(userId: String!): CreateGamePayload
+  createNewGame(userId: ID!): CreateGamePayload
 }
+

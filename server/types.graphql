@@ -13,6 +13,7 @@ type User @model {
   password: String
 
   games: [Game!]! @relation(name: "UserInGame")
+  gamesCreated: [Game!]! @relation(name: "GameCreator")
   gamesWon: [Game!]! @relation(name: "GameWinner")
   shots: [Shot!]! @relation(name: "UserShot")
   innings: [Inning!]! @relation(name: "PlayersInInning")
@@ -24,6 +25,7 @@ type Game @model {
   id: ID! @isUnique
   createdAt: DateTime!
   updatedAt: DateTime!
+  creator: User! @relation(name: "GameCreator")
   players: [User!]! @relation(name: "UserInGame")
   innings: [Inning!]! @relation(name: "InningInGame")
   winner: User @relation(name: "GameWinner")
