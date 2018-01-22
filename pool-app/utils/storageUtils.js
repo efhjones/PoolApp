@@ -25,4 +25,12 @@ export const saveGameToken = async (gameId) => {
   }
 };
 
+export const deleteGameToken = async () => {
+  try {
+    return await AsyncStorage.removeItem(CURRENT_GAME_TOKEN);
+  } catch (err) {
+    return err;
+  }
+};
+
 export default getToken;
