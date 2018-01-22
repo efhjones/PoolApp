@@ -13,7 +13,6 @@ const mapStateToProps = (state) => {
   const { game } = state;
   const gameId = game.id;
   const isGameInProgress = game.inProgress;
-  debugger;
   return {
     gameId,
     isGameInProgress
@@ -31,7 +30,6 @@ const mapDispatchToProps = (dispatch, props) => ({
           dispatch(GameActions.onSetGameId(gameId));
         })
           .catch((err) => {
-            debugger;
             dispatch(AppActions.onSetErrors(err));
           });
       }
@@ -45,10 +43,7 @@ export default compose(
   withGame,
   createGame,
   branch(
-    (props) => {
-      debugger;
-      return props.gameInProgress;
-    },
+    props => props.gameInProgress,
     renderComponent(ActiveGameContainer)
   )
 )(Game);
