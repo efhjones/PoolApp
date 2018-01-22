@@ -25,20 +25,6 @@ const styles = StyleSheet.create({
   }
 });
 
-const AddNewGameButton = ({ onCreateNewGame, id }) => (
-  <Button
-    style={styles.newGameButton}
-    onPress={() => onCreateNewGame(id)}
-    title="New Game"
-  />
-);
-
-AddNewGameButton.propTypes = {
-  onCreateNewGame: PropTypes.func.isRequired,
-  id: PropTypes.string.isRequired
-};
-
-
 const Home = ({ onLogOut }) => (
   <View style={styles.container}>
     <Text style={styles.welcome}>
