@@ -16,6 +16,12 @@ const styles = StyleSheet.create({
   },
   logOutButton: {
     display: 'flex'
+  },
+  newGameButton: {
+    backgroundColor: 'white',
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-end'
   }
 });
 
@@ -26,7 +32,7 @@ const Home = ({ onLogOut }) => (
     </Text>
     <Button
       style={styles.logOutButton}
-      onPress={() => onLogOut()}
+      onPress={onLogOut}
       title="Log out"
     />
   </View>

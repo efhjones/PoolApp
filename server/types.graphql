@@ -6,10 +6,71 @@ type User @model {
   id: ID! @isUnique # read-only (managed by Graphcool)
 
   # Optional system fields (remove if not needed):
-  createdAt: DateTime! # read-only (managed by Graphcool)
-  updatedAt: DateTime! # read-only (managed by Graphcool)
+  createdAt: DateTime!
+  updatedAt: DateTime!
 
   email: String! @isUnique
-  password: String!
+  password: String
+
+  games: [Game!]! @relation(name: "UserInGame")
+  gamesCreated: [Game!]! @relation(name: "GameCreator")
+  gamesWon: [Game!]! @relation(name: "GameWinner")
+  shots: [Shot!]! @relation(name: "UserShot")
+  innings: [Inning!]! @relation(name: "PlayersInInning")
+  turn: Turn @relation(name: "UserTurn")
+  team: Team @relation(name: "PlayerInTeam")
 }
 
+type Game @model {
+  id: ID! @isUnique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  creator: User! @relation(name: "GameCreator")
+  players: [User!]! @relation(name: "UserInGame")
+  innings: [Inning!]! @relation(name: "InningInGame")
+  winner: User @relation(name: "GameWinner")
+  inProgress: Boolean! @migrationValue(value: false)
+  teams: [Team!]! @relation(name: "TeamInGame")
+}
+
+type Team @model {
+  id: ID! @isUnique
+  gameId: Game! @relation(name: "TeamInGame")
+  players: [User!]! @relation(name: "PlayerInTeam")
+}
+
+type Inning @model {
+  id: ID! @isUnique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  game: Game! @relation(name: "InningInGame")
+  turns: [Turn!]! @relation(name: "TurnsInInning")
+  players: [User!]! @relation(name: "PlayersInInning")
+}
+
+type Turn @model {
+  id: ID! @isUnique
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  player: User! @relation(name: "UserTurn")
+  inning: Inning! @relation(name: "TurnsInInning")
+  shots: [Shot!]! @relation(name: "ShotsInTurn")
+}
+
+type Shot @model {
+  id: ID! @isUnique
+  type: String!
+  points: Int!
+  player: User! @relation(name: "UserShot")
+  turn: Turn! @relation(name: "ShotsInTurn")
+}
+
+# Save for later when 'turns' is added
+# enum ShotType {
+#   COMBO
+#   BANK
+#   KICK
+#   SCRATCH
+#   CUT
+#   STRAIGHT
+# }

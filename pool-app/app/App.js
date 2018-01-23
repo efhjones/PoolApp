@@ -10,29 +10,58 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Error from '../error/Error';
-import Home from '../home/HomeContainer';
+import HomeContainer from '../home/HomeContainer';
 import Loading from '../loading/Loading';
+import { MIDNIGHT_BLUE, PLATINUM, PARADISE_PINK } from '../styles/constants';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF'
+    backgroundColor: MIDNIGHT_BLUE
   },
   field: {
     height: 40,
-    borderColor: 'grey',
+    borderColor: PLATINUM,
     borderWidth: 1,
     width: 200,
     marginBottom: 10,
-    padding: 10
+    padding: 10,
+    color: PLATINUM
   },
   signInButton: {
     display: 'flex'
   },
   createAccountButton: {
-    display: 'flex'
+    display: 'flex',
+    backgroundColor: PLATINUM
+  },
+  createAccountButtonContainer: {
+    display: 'flex',
+    backgroundColor: PARADISE_PINK
+  },
+  signInButtonContainer: {
+    backgroundColor: PLATINUM,
+    display: 'flex',
+    borderRadius: 300
+  },
+  buttonRow: {
+    flexDirection: 'column',
+    display: 'flex',
+    width: 200
+  },
+  or: {
+    color: PLATINUM,
+    textAlign: 'center',
+    fontWeight: '600',
+    padding: 10
+  },
+  header: {
+    fontSize: 50,
+    color: PLATINUM,
+    paddingTop: 20,
+    paddingBottom: 20
   }
 });
 
@@ -48,38 +77,50 @@ const LoggedOutView = ({
   onLogIn
 }) => (
   <View style={styles.container}>
-    <Text>Sign in or create a new account below</Text>
+    <Text style={styles.header}>Poolie</Text>
     <TextInput
-      onChangeText={newEmail => onChangeEmail(newEmail)}
+      onChangeText={onChangeEmail}
       onFocus={onClearErrors}
       value={email}
       style={styles.field}
+      placeholderTextColor={PLATINUM}
       autoCapitalize="none"
       placeholder="email"
       keyboardType="email-address"
     />
     <TextInput
-      onChangeText={newPassword => onChangePassword(newPassword)}
+      onChangeText={onChangePassword}
+      placeholderTextColor={PLATINUM}
       onFocus={onClearErrors}
       value={password}
       style={styles.field}
       placeholder="password"
+      color={PLATINUM}
     />
     {
       isErrored
       ? <Error error={errorMessage} />
       : null
     }
-    <Button
-      style={styles.createAccountButton}
-      onPress={() => onSignUp(email, password)}
-      title="Create an Account"
-    />
-    <Button
-      style={styles.signInButton}
-      title="Sign In"
-      onPress={() => onLogIn(email, password)}
-    />
+    <View style={styles.buttonRow}>
+      <View style={styles.signInButtonContainer}>
+        <Button
+          style={styles.signInButton}
+          title="Sign In"
+          color={MIDNIGHT_BLUE}
+          onPress={() => onLogIn(email, password)}
+        />
+      </View>
+      <Text style={styles.or}>- OR -</Text>
+      <View style={styles.createAccountButtonContainer}>
+        <Button
+          style={styles.createAccountButton}
+          onPress={() => onSignUp(email, password)}
+          title="Create an Account"
+          color={PLATINUM}
+        />
+      </View>
+    </View>
   </View>
 );
 
@@ -102,7 +143,9 @@ LoggedOutView.defaultProps = {
 const App = (props) => {
   const isLoggedIn = props.id;
   return (
-    isLoggedIn ? <Home /> : <LoggedOutView {...props} />
+    isLoggedIn
+      ? <HomeContainer navigation={props.navigation} />
+      : <LoggedOutView {...props} />
   );
 };
 
@@ -110,7 +153,8 @@ App.propTypes = {
   data: PropTypes.shape({
     loading: PropTypes.bool.isRequired
   }).isRequired,
-  id: PropTypes.string
+  id: PropTypes.string,
+  navigation: PropTypes.object.isRequired
 };
 
 App.defaultProps = {
@@ -135,7 +179,10 @@ const AppWithLifecycle = lifecycle({
   componentWillMount() {
     const id = _.get(this.props.data, ['loggedInUser', 'id']);
     if (id) {
+      this.props.navigation.setParams({ isLoggedIn: true });
       this.props.onLogInWithId({ id });
+    } else {
+      this.props.navigation.setParams({ isLoggedIn: false });
     }
   }
 })(App);

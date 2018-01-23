@@ -1,0 +1,8 @@
+type CreateGamePayload {
+  id: ID!
+}
+
+extend type Mutation {
+  createNewGame(userId: ID!): CreateGamePayload
+}
+
