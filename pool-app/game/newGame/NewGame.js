@@ -63,7 +63,8 @@ const NewGame = ({
   addingToTeamId,
   onRemoveTeam,
   onAddTeam,
-  onDeleteGame
+  onDeleteGame,
+  onStartGame
 }) => (
   <View style={styles.container}>
     <Button
@@ -100,6 +101,10 @@ const NewGame = ({
     <Button
       onPress={() => onAddTeam(gameId)}
       title="Add Team"
+    />
+    <Button
+      onPress={() => onStartGame(gameId)}
+      title="Start Game"
     />
     <Modal
       visible={isSearchModalOpen}
@@ -154,7 +159,8 @@ NewGame.propTypes = {
       id: PropTypes.string.isRequired,
       email: PropTypes.string.isRequired
     })).isRequired
-  })).isRequired
+  })).isRequired,
+  onStartGame: PropTypes.func.isRequired
 };
 
 NewGame.defaultProps = {

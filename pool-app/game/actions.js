@@ -27,6 +27,11 @@ const GameActions = {
       id
     };
   },
+  startGame() {
+    return {
+      type: ActionTypes.START_GAME
+    };
+  },
   updateGame(game) {
     return {
       type: ActionTypes.UPDATE_GAME,

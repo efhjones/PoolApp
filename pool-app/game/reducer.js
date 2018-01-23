@@ -44,6 +44,12 @@ const gameReducer = createReducer(initialState, {
       teams: newTeams
     };
   },
+  [ActionTypes.START_GAME](state) {
+    return {
+      ...state,
+      inProgress: true
+    };
+  },
   [ActionTypes.UPDATE_GAME](state, { game }) {
     return {
       ...state,

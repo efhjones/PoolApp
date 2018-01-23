@@ -13,6 +13,7 @@ import removePlayerFromTeam from '../../graphql/removePlayerFromTeam';
 import removeTeam from '../../graphql/removeTeam';
 import addTeamToGame from '../../graphql/addTeamToGame';
 import createGame from '../../graphql/createGame';
+import startGame from '../../graphql/startGame';
 
 const mapStateToProps = (state) => {
   const { game, app } = state;
@@ -41,6 +42,15 @@ const mapDispatchToProps = (dispatch, props) => ({
           });
       }
     });
+  },
+  onStartGame(gameId) {
+    props.startGame({ variables: { gameId } })
+      .then(() => {
+        dispatch(GameActions.onStartGame());
+      })
+      .catch((err) => {
+        dispatch(AppActions.onSetErrors(err));
+      });
   },
   onAddPlayer({ userId, teamId }) {
     props.addPlayerToTeam({ variables: { userId, teamId } })
@@ -99,6 +109,7 @@ export default compose(
   removeTeam,
   addTeamToGame,
   createGame,
+  startGame,
   connect(mapStateToProps, mapDispatchToProps),
   withGame,
   branch(
