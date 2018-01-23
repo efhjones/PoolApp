@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { lifecycle, compose, withStateHandlers } from 'recompose';
 import _ from 'lodash';
 import { StyleSheet, View, Button, Text, TextInput, Modal } from 'react-native';
-
+import Error from '../../error/Error';
 
 const styles = StyleSheet.create({
   container: {
@@ -64,9 +64,16 @@ const NewGame = ({
   onRemoveTeam,
   onAddTeam,
   onDeleteGame,
-  onStartGame
+  onStartGame,
+  isErrored,
+  errorMessage
 }) => (
   <View style={styles.container}>
+    {
+      isErrored
+      ? <Error error={errorMessage} />
+      : null
+    }
     <Button
       onPress={() => onDeleteGame()}
       title="Delete game"
@@ -103,7 +110,7 @@ const NewGame = ({
       title="Add Team"
     />
     <Button
-      onPress={() => onStartGame(gameId)}
+      onPress={() => onStartGame(gameId, teams)}
       title="Start Game"
     />
     <Modal
@@ -160,7 +167,8 @@ NewGame.propTypes = {
       email: PropTypes.string.isRequired
     })).isRequired
   })).isRequired,
-  onStartGame: PropTypes.func.isRequired
+  onStartGame: PropTypes.func.isRequired,
+  isErrored: PropTypes.bool.isRequired
 };
 
 NewGame.defaultProps = {

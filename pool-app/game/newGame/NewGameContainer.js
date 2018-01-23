@@ -14,14 +14,18 @@ import removeTeam from '../../graphql/removeTeam';
 import addTeamToGame from '../../graphql/addTeamToGame';
 import createGame from '../../graphql/createGame';
 import startGame from '../../graphql/startGame';
+import { everyTeamHasAPlayer } from '../gameUtils';
 
 const mapStateToProps = (state) => {
   const { game, app } = state;
   const { id, teams } = game;
+  const { isErrored, errorMessage } = app;
   return {
     gameId: id,
     teams,
-    userId: app.id
+    userId: app.id,
+    isErrored,
+    errorMessage
   };
 };
 
@@ -43,14 +47,20 @@ const mapDispatchToProps = (dispatch, props) => ({
       }
     });
   },
-  onStartGame(gameId) {
-    props.startGame({ variables: { gameId } })
-      .then(() => {
-        dispatch(GameActions.onStartGame());
-      })
-      .catch((err) => {
-        dispatch(AppActions.onSetErrors(err));
-      });
+  onStartGame(gameId, teams) {
+    if (everyTeamHasAPlayer(teams)) {
+      props.startGame({ variables: { gameId } })
+        .then(() => {
+          dispatch(GameActions.onStartGame());
+        })
+        .catch((err) => {
+          dispatch(AppActions.onSetErrors(err));
+        });
+    } else {
+      dispatch(AppActions.onSetErrors({
+        errorMessage: 'You must have at least one person on each team to start a game.'
+      }));
+    }
   },
   onAddPlayer({ userId, teamId }) {
     props.addPlayerToTeam({ variables: { userId, teamId } })
