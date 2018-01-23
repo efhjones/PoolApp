@@ -168,12 +168,14 @@ NewGame.propTypes = {
     })).isRequired
   })).isRequired,
   onStartGame: PropTypes.func.isRequired,
-  isErrored: PropTypes.bool.isRequired
+  isErrored: PropTypes.bool.isRequired,
+  errorMessage: PropTypes.string
 };
 
 NewGame.defaultProps = {
   gameId: null,
-  addingToTeamId: null
+  addingToTeamId: null,
+  errorMessage: ''
 };
 
 const pathToGame = ['getGame', 'Game'];
