@@ -34,8 +34,7 @@ const appReducer = createReducer(initialState, {
     const errorMessage = _.get(
       action,
       ['errors', 'graphQLErrors', 0, 'functionError'],
-      'There was an error'
-    );
+    ) || _.get(action, ['errors', 'errorMessage'], 'There was an error');
     return {
       ...state,
       isErrored: true,
