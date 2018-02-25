@@ -14,6 +14,7 @@ import removeTeam from '../../graphql/removeTeam';
 import addTeamToGame from '../../graphql/addTeamToGame';
 import createGame from '../../graphql/createGame';
 import startGame from '../../graphql/startGame';
+import createCustomPlayer from '../../graphql/createCustomPlayer';
 import { everyTeamHasAPlayer } from '../gameUtils';
 
 const mapStateToProps = (state) => {
@@ -73,6 +74,26 @@ const mapDispatchToProps = (dispatch, props) => ({
         dispatch(AppActions.onSetErrors(err));
       });
   },
+  onAddCustomPlayer({ email, teamId }) {
+    props.createCustomPlayer({ variables: { email } })
+      .then((response) => {
+        const { createUser } = response.data;
+        const userId = _.get(createUser, ['id']);
+        props.addPlayerToTeam({ variables: { userId, teamId } })
+          .then(({ data }) => {
+            const { addToPlayerInTeam } = data;
+            const team = _.get(addToPlayerInTeam, ['teamsTeam'], []);
+            dispatch(GameActions.updateTeamPlayers(team));
+          })
+          .catch((err) => {
+            dispatch(AppActions.onSetErrors(err));
+          });
+      })
+      .catch((err) => {
+        debugger;
+        dispatch(AppActions.onSetErrors(err));
+      });
+  },
   onRemovePlayer({ teamId, userId }) {
     props.removePlayerFromTeam({ variables: { teamId, userId } })
       .then(({ data }) => {
@@ -120,12 +141,14 @@ export default compose(
   addTeamToGame,
   createGame,
   startGame,
+  createCustomPlayer,
   connect(mapStateToProps, mapDispatchToProps),
   withGame,
   branch(
     (props) => {
       const isGameLoading = _.get(props, ['getGame', 'loading'], false);
-      return isGameLoading;
+      const isAllUsersLoading = _.get(props, ['getAllUsers', 'loading'], false);
+      return isGameLoading || isAllUsersLoading;
     },
     renderComponent(Loading)
   )
